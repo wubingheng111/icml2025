@@ -1,0 +1,38 @@
+\begin{thebibliography}{6}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Duda et~al.(2000)Duda, Hart, and Stork]{DudaHart2nd}
+Duda, R.~O., Hart, P.~E., and Stork, D.~G.
+\newblock \emph{Pattern Classification}.
+\newblock John Wiley and Sons, 2nd edition, 2000.
+
+\bibitem[Gu \& Dao(2023)Gu and Dao]{gu2023mamba}
+Gu, A. and Dao, T.
+\newblock Mamba: Linear-time sequence modeling with selective state spaces.
+\newblock \emph{arXiv preprint arXiv:2312.00752}, 2023.
+
+\bibitem[Michalski et~al.(1983)Michalski, Carbonell, and Mitchell]{MachineLearningI}
+Michalski, R.~S., Carbonell, J.~G., and Mitchell, T.~M. (eds.).
+\newblock \emph{Machine Learning: An Artificial Intelligence Approach, Vol. I}.
+\newblock Tioga, Palo Alto, CA, 1983.
+
+\bibitem[Newell \& Rosenbloom(1981)Newell and Rosenbloom]{Newell81}
+Newell, A. and Rosenbloom, P.~S.
+\newblock Mechanisms of skill acquisition and the law of practice.
+\newblock In Anderson, J.~R. (ed.), \emph{Cognitive Skills and Their Acquisition}, chapter~1, pp.\  1--51. Lawrence Erlbaum Associates, Inc., Hillsdale, NJ, 1981.
+
+\bibitem[Samuel(1959)]{Samuel59}
+Samuel, A.~L.
+\newblock Some studies in machine learning using the game of checkers.
+\newblock \emph{IBM Journal of Research and Development}, 3\penalty0 (3):\penalty0 211--229, 1959.
+
+\bibitem[Vaswani et~al.(2017)Vaswani, Shazeer, Parmar, Uszkoreit, Jones, Gomez, Kaiser, and Polosukhin]{transformer2017}
+Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A.~N., Kaiser, L., and Polosukhin, I.
+\newblock Attention is all you need.
+\newblock \emph{arXiv preprint arXiv:1706.03762}, 2017.
+
+\end{thebibliography}
