@@ -60,7 +60,7 @@
 \begin{document}
 
 \twocolumn[
-\icmltitle{OTCE: Hybrid SSM and Attention with Cross Domain Mixture of Experts to construct Observer-Thinker-Conceiver-Expresser}
+\icmltitle{Re-Examine Hybrid State-Space and Self-Attention for In-Context Learning}
 
 % It is OKAY to include author information, even for blind
 % submissions: the style file will automatically remove it for you
@@ -80,8 +80,6 @@
 \begin{icmlauthorlist}
 \icmlauthor{Jingze Shi}{equal,yyy}
 \icmlauthor{Bingheng Wu}{equal,yyy,comp}
-\icmlauthor{Ting Xie}{comp}
-\icmlauthor{Chunjun Zheng}{sch}
 
 %\icmlauthor{}{sch}
 %\icmlauthor{}{sch}
@@ -105,7 +103,10 @@
 
 
 \begin{abstract}
-We have found that combining Mamba with Transformer architecture outperforms using Mamba or Transformer architecture alone in language modeling tasks. We propose a position information injection method that connects the selective state space model with the quadratic attention, and integrates these two architectures with hybrid experts with cross-sharing domains, so that we can enjoy the advantages of both. We design a new architecture with a more biomimetic idea: Observer-Thinker-Conceiver-Expresser (OTCE), which can compete with well-known medium-scale open-source language models on a small scale in language modeling tasks.
+% 最近的研究表明, 将状态空间算法驱动的 Mamba 与自注意力算法驱动的 Transformer 相结合, 在大多数语言建模任务上的表现超越了单独使用 Mamba 或 Transformer. 
+% 但是, 目前主流的混合建模架构模型在情景学习任务上的表现并不理想, 我们重新审视了这两种算法的优势和劣势, 从原理出发对这种混合建模的结构重新设计. 
+% 最终, 重新设计的架构, 在标准短文本任务中提升了 1.3 \% 效果, 在自然长文本任务中提升了 20.86 \% 效果, 在合成长文本任务中提升了 27.06 \% 效果.
+Recent research has shown that combining the state-space algorithm-driven Mamba with the self-attention algorithm-driven Transformer outperforms using Mamba or Transformer alone in most language modeling tasks. However, the performance of the mainstream hybrid modeling architecture models in in-context learning tasks is not ideal. We re-examine the advantages and disadvantages of these two algorithms and redesign the structure of this hybrid modeling from the principle. The finally redesigned architecture improves the performance by 1.3\% in standard short text tasks, 20.86\% in natural long text tasks, and 27.06\% in synthetic long text tasks.
 \end{abstract}
 
 \section{Introduction}
