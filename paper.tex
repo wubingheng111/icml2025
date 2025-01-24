@@ -14,7 +14,6 @@
 % \usepackage{icml2025} with \usepackage[nohyperref]{icml2025} above.
 \usepackage{hyperref}
 
-
 % Attempt to make hyperref and algorithmic work together better:
 \newcommand{\theHalgorithm}{\arabic{algorithm}}
 
@@ -32,6 +31,13 @@
 
 % if you use cleveref..
 \usepackage[capitalize,noabbrev]{cleveref}
+
+
+
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage{booktabs}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % THEOREMS
@@ -148,47 +154,22 @@ We empirically validated OTCE on multiple tasks, including semantic similarity e
 Selective state space models~\cite{gu2023mamba} consider that a fundamental problem in sequence modeling is to compress the context into a smaller state. From this perspective, the attention mechanism of Transformers explicitly stores the entire context information, as if reviewing all previous inputs and generated tokens before writing each token. In contrast, RNNs only refer to a fixed number of previous tokens each time, which allows for faster writing but may forget key tokens.
 
 In the precursor state space models of selective state space models, there are 4 parameters$(\Delta t, A, B, C)$, and they do not change with the input. These parameters control the following two stages:
+\begin{align}
+   h'(t) &= Ah(t) + Bx(t) \quad \text{(1a)} \nonumber \\
+   y(t) &= Ch(t) \quad \text{(1b)} \nonumber \\
+   h_t &= \overline{A}h_{t-1} + \overline{B}x_t \quad \text{(2a)} \nonumber \\
+   y_t &= Ch_t \quad \text{(2b)} \nonumber \\
+   \overline{K} &= (C\overline{B}, C\overline{A}\overline{B}, \ldots, C\overline{A}^{k-1}\overline{B}, \ldots) \quad \text{(3a)} \nonumber \\
+   y &= x * \overline{K} \quad \text{(3b)} \nonumber
+\end{align}
+\begin{itemize}
+   \item In the first stage (1a \& 1b), the continuous parameters $h'(t)$ are transformed into discrete parameters $h_t$ through a fixed formula $\overline{A} = f_A(\Delta t, A)$ and $\overline{B} = f_B(\Delta t, A, B)$, where $(f_A, f_B)$ is called the discretization rule. The most common is the zero-order hold (ZOH) rule, defined as $\overline{A} = \exp(\Delta t A)$ and $\overline{B} = (\Delta t A)^{-1} (\exp(\Delta t A) - I) \cdot \Delta t B$.
+   \item In the second stage (2a \& 2b and 3a \& 3b), after the parameters are transformed from $(\Delta t, A, B, C)$ to $(\overline{A}, \overline{B}, C)$, linear recursion or global convolution can be used for computation.
+\end{itemize}
+State space models cannot update states selectively based on different input information.
 
+The solution of selective state space models (Mamba~\citep{gu2023mamba}) is that, compared to state space models that compress all historical information, they design a simple selection mechanism that parameterizes the input of the state space model,making $(\Delta t, B, C)$  a function of the input.
 
-
-
-
-% Note use of \abovespace and \belowspace to get reasonable spacing
-% above and below tabular lines.
-
-\begin{table}[t]
-\caption{Classification accuracies for naive Bayes and flexible
-Bayes on various data sets.}
-\label{sample-table}
-\vskip 0.15in
-\begin{center}
-\begin{small}
-\begin{sc}
-\begin{tabular}{lcccr}
-\toprule
-Data set & Naive & Flexible & Better? \\
-\midrule
-Breast    & 95.9$\pm$ 0.2& 96.7$\pm$ 0.2& $\surd$ \\
-Cleveland & 83.3$\pm$ 0.6& 80.0$\pm$ 0.6& $\times$\\
-Glass2    & 61.9$\pm$ 1.4& 83.8$\pm$ 0.7& $\surd$ \\
-Credit    & 74.8$\pm$ 0.5& 78.3$\pm$ 0.6&         \\
-Horse     & 73.3$\pm$ 0.9& 69.7$\pm$ 1.0& $\times$\\
-Meta      & 67.1$\pm$ 0.6& 76.5$\pm$ 0.5& $\surd$ \\
-Pima      & 75.1$\pm$ 0.6& 73.9$\pm$ 0.5&         \\
-Vehicle   & 44.9$\pm$ 0.6& 61.5$\pm$ 0.4& $\surd$ \\
-\bottomrule
-\end{tabular}
-\end{sc}
-\end{small}
-\end{center}
-\vskip -0.1in
-\end{table}
-
-Tables contain textual material, whereas figures contain graphical material.
-Specify the contents of each row and column in the table's topmost
-row. Again, you may float tables to a column's top or bottom, and set
-wide tables across both columns. Place two-column tables at the
-top or bottom of the page.
 
 \subsection{Theorems and such}
 The preferred way is to number definitions, propositions, lemmas, etc. consecutively, within sections, as shown below.
