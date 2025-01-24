@@ -36,13 +36,6 @@
 % if you use cleveref..
 \usepackage[capitalize,noabbrev]{cleveref}
 
-
-
-\usepackage{algorithm}
-\usepackage{algpseudocode}
-\usepackage{xcolor}
-\usepackage{booktabs}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % THEOREMS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -117,194 +110,187 @@ Recent research has shown that combining the state-space algorithm-driven Mamba 
 
 \section{Introduction}
 \label{submission}
+% Transformers~\cite{transformer2017} 架构的自注意力算法能够直接捕捉序列中任意两个元素间的关系, 有效处理长距离依赖问题. 但是却受到二次复杂度的限制.
+% Mamba~\cite{gu2023mamba} 架构的状态空间算法能够在训练期间实现序列长度的线性缩放, 并在生成期间保持恒定的状态大小, 但是却在捕捉长距离依赖问题上导致偏差.
+% 混合建模架构模型, 例如 Wonderful Matrices~\cite{shi2024wonderfulmatrices}, Jamba~\cite{lieber2024jamba}, 等等, 使用状态空间和自注意力进行混合建模, 使模型具备与 Mamba 类似的效率和与 Transformer 类似的效果. 然而, 这些模型在情景学习任务上的表现却与原始的 Transformer 相比, 仍然有不小的差距.
+The self-attention algorithm of the Transformers~\cite{wolf-etal-2020-transformers} architecture can directly capture the relationship between any two elements in a sequence, effectively handle long-distance dependencies. However, it is limited by quadratic complexity. The state-space algorithm of the Mamba~\cite{gu2023mamba} architecture can achieve linear scaling of sequence length during training and maintain a constant state size during generation, but it leads to bias in capturing long-distance dependencies. Hybrid modeling architecture models, such as Wonderful Matrices~\cite{shi2024wonderfulmatrices}, Jamba~\cite{lieber2024jamba}, etc., use state-space and self-attention for hybrid modeling, making the model have efficiency similar to The Mamba and effect similar to The Transformer. However, these models still have a significant gap in performance in in-context learning tasks compared to the original Transformer.
 
-The Transformers (Attention is All You Need~\cite{transformer2017}) architecture is popular in modern deep learning language modeling, which can directly capture the relationship between any two elements in a sequence, effectively handle long-distance dependencies, however, the architecture has two main drawbacks. First, when processing long sequences, its self-attention mechanism's quadratic complexity and cache size limit the ability to handle long contexts. Second, Transformer lacks a single summary state, which means that each generated token must compute over the entire context, which exacerbates the model's computational burden.
-Meanwhile, the Selective State Model (Mamba~\cite{gu2023mamba}) has emerged. Mamba achieves linear scaling of sequence length during training and maintains a constant state size during generation through its selective state update mechanism. Moreover, due to its linear recursive state update mechanism, Mamba has a single summary state. However, Mamba also has a major drawback, that is, its positional information depends on the implicit local positional information provided by the causal convolution, while long-distance dependencies depend on the matrix D that skips the connection between input and output. This makes Mamba perform poorly in capturing long-distance dependencies, such as correctly capturing input-output formats in context learning (ICL).
-An efficient model must have a small state, and an effective model must have a state that contains all the necessary information from the context. To build a model that is both efficient and effective, the key is to design a state that is both compact and comprehensive in capturing the necessary context information. Our main goal is to combine self-attention and the Selective State Model to overcome their respective limitations, further combine them with a mixed expert with extensive general and cross-domain knowledge to build a better basic model architecture than Transformers or Mamba. The model has the ability to learn long context dependencies, aggregate states, and efficient reasoning. This paper proposes a bionic perspective, aiming to explore new model architectures by cleverly combining the Selective State Model with self-attention mechanism. This approach can fully utilize the advantages of the two mechanisms and promote language modeling in a more efficient and effective direction.
+% 我们提出了 Self-Attention before LM-Head~\ref{fig:architecture}, 这是对现有的混合堆叠架构模型的一种简单改变, 将状态空间和自注意力修改为使用相同的位置编码, 并在 LM-Head 预测概率分布之前使用自注意力和前馈网络构成的 Transformer 块. 这种方法使得模型能够继续利用状态空间的高效上下文摘要和自注意力有效联想召回的优势, 而不会在最终的token预测上产生偏差.
+We propose Self-Attention before LM-Head~\ref{fig:architecture}, which is a simple change to the existing hybrid stacked architecture models, modifying the state-space and self-attention to use the same positional encoding, and using a Transformer block composed of self-attention and feed-forward networks before the LM-Head predicts the probability distribution. This method allows the model to continue to leverage the advantages of the efficient context summary of the state-space and the effective associative recall of self-attention without bias in the final token prediction.
 
-\subsection{Positional Information}
+% 我们的研究与评估表明, Self-Attention before LM-Head 只需要很少的结构与参数调整, 就能够与基线混合模型相比, 在上下文学习任务基准上取得更好的性能. 例如, 在标准短文本任务中, 我们的模型提升了 1.3 \% 的效果, 在自然长文本任务中提升了 20.86 \% 的效果, 在合成长文本任务中提升了 27.06 \% 的效果, 并且在大海捞针任务上取得了最先进的效果.
+Our research and evaluation show that Self-Attention before LM-Head can achieve better performance on the in-context learning task benchmark compared to the baseline hybrid model with only a few structural and parameter adjustments. For example, in standard short text tasks, our model improves performance by 1.3\%, in natural long text tasks by 20.86\%, in synthetic long text tasks by 27.06\%, and achieves state-of-the-art performance on the needle in a haystack task.
 
-We first identified a key challenge in combining the Selective State Model with self-attention: the effective integration of positional information. In Mamba, positional information is provided by the implicit local positional information from the causal convolution, while self-attention itself cannot provide positional information, it relies on positional encoding to provide global positional context. To address this issue, we designed a relative positional information injection method that connects the inner product state of the Selective State Space with the inner product state of self-attention, allowing the input gate-state-output gate of the Selective State Space to make filtered relevant information have discrete relative positional information, and in self-attention, the discrete relative positional information is re-continuous to build long-term dependency relationships of relevant information. This method not only enables our model to have the ability to selectively process input sequences but also effectively capture long-distance dependency relationships. In complex multi-query associative recall tasks, our model trained on the same dataset outperforms larger-scale Mamba, Transformer models, and models that mix Mamba and Transformer without our proposed relative positional information injection method.
-
-\subsection{Cross-Domain Mixture of Experts}
-In human society, knowledge is widely distributed across different domains, and these domains are interconnected through common foundational knowledge and cross-domain connections. To simulate this phenomenon in the model, we designed two types of cross-domain mixed experts: Cohesive Cross-Domain Expert and Expansive Cross-Domain Expert. These experts (multi-layer perceptrons) store and transfer common foundational knowledge and cross-domain knowledge between different domains by sharing parameters. The Cohesive Cross-Domain Expert achieves close integration between domains by sharing linear layer parameters within all experts, which is more suitable for small-scale models with fewer experts because of its faster computation speed. The Expansive Cross-Domain Expert shares a complete MLP parameter, adding a common domain knowledge gate in each expert to control the flow of common domain knowledge into private MLP parameters, which is more suitable for large-scale models with more experts because it allows for more flexible adjustment and utilization of common knowledge. Experimental results show that the performance of these two cross-domain mixed experts on the same dataset is better than shared expert isolated mixed experts, confirming the effectiveness of our design in promoting cross-domain knowledge transfer and improving model generalization.
-
-\subsection{Architecture Design}
-
-From a biological perspective, the relationship between input and output can be described by observing, thinking, conceiving, and expressing four stages. Inspired by this idea, we designed a new architecture with a bionic perspective: Observer-Thinker-Conceiver-Expresser (\textbf{OTCE}). The OTCE architecture mimics the natural process of information processing in biology, aiming to optimize information processing and transmission in a modular way. In the Observer module, we use the selective state space's selection ability to filter out irrelevant information in the sequence to retain relevant information. In the Thinker module, we use the self-attention's ability to capture dependencies between any two elements in a sequence of any length, regardless of their position in the sequence, to build long-term dependency relationships. In the Conceiver module, we use the linear recursive state update mechanism of the state space to build a single summary state information. In the Expresser module, we combine the context-aware state information produced by self-attention considering all elements with the summary state information to build a context-aware summary state. We also studied the combination of the Selective State Space and self-attention with ordinary multi-layer perceptrons and cross-domain mixed experts, and finally determined a model combination with the lowest perplexity at the same parameter scale.
-
-We empirically validated OTCE on multiple tasks, including semantic similarity evaluation, long-short text classification, natural language inference, keyword recognition, different domain selection tasks, context learning, and multi-query associative recall tasks. These experiments demonstrate the effectiveness of the OTCE architecture in handling complex language tasks.
-
-
-
-
-\begin{figure}[H]
+\begin{figure*}[ht]
    \centering
-   \includegraphics[width=1.0\linewidth]{fig/otce.png}
-   \caption{(\textbf{OTCE Architecture}.) OTCE demonstrates the overall combined architecture and process of using Observer, Thinker, Conceiver, and Expresser modules in language modeling tasks. Observer, Thinker, Conceiver, and Expresser show their internal combination of selective state space, self-attention, multi-layer perceptron, and cross-domain mixed experts.}
-   \label{fig:otce}
-\end{figure}
+   \includegraphics[width=\linewidth]{fig/architecture.pdf}
+   \caption{
+      % 状态空间和自注意力都使用相同的位置编码, 并且在 LM-Head 之前使用自注意力和前馈网络构成的 Transformer 块, 无论模型骨干的其他部分如何组合.
+     \textbf{Self-Attention before LM-Head}.
+      The state-space and self-attention both use the same positional encoding, and a Transformer block composed of self-attention and feed-forward networks is used before the LM-Head, regardless of how the other parts of the model backbone are combined.
+   }
+   \label{fig:architecture}
+\end{figure*}
 
 
-
-\section{Background}
-\subsection{Selective State Space Models}
-
-
-Selective state space models~\cite{gu2023mamba} consider that a fundamental problem in sequence modeling is to compress the context into a smaller state. From this perspective, the attention mechanism of Transformers explicitly stores the entire context information, as if reviewing all previous inputs and generated tokens before writing each token. In contrast, RNNs only refer to a fixed number of previous tokens each time, which allows for faster writing but may forget key tokens.
-
-In the precursor state space models of selective state space models, there are 4 parameters$(\Delta t, A, B, C)$, and they do not change with the input. These parameters control the following two stages:
-\begin{align}
-   h'(t) &= Ah(t) + Bx(t) \quad \text{(1a)} \nonumber \\
-   y(t) &= Ch(t) \quad \text{(1b)} \nonumber \\
-   h_t &= \overline{A}h_{t-1} + \overline{B}x_t \quad \text{(2a)} \nonumber \\
-   y_t &= Ch_t \quad \text{(2b)} \nonumber \\
-   \overline{K} &= (C\overline{B}, C\overline{A}\overline{B}, \ldots, C\overline{A}^{k-1}\overline{B}, \ldots) \quad \text{(3a)} \nonumber \\
-   y &= x * \overline{K} \quad \text{(3b)} \nonumber
-\end{align}
-\begin{itemize}
-   \item In the first stage (1a \& 1b), the continuous parameters $h'(t)$ are transformed into discrete parameters $h_t$ through a fixed formula $\overline{A} = f_A(\Delta t, A)$ and $\overline{B} = f_B(\Delta t, A, B)$, where $(f_A, f_B)$ is called the discretization rule. The most common is the zero-order hold (ZOH) rule, defined as $\overline{A} = \exp(\Delta t A)$ and $\overline{B} = (\Delta t A)^{-1} (\exp(\Delta t A) - I) \cdot \Delta t B$.
-   \item In the second stage (2a \& 2b and 3a \& 3b), after the parameters are transformed from $(\Delta t, A, B, C)$ to $(\overline{A}, \overline{B}, C)$, linear recursion or global convolution can be used for computation.
-\end{itemize}
-State space models cannot update states selectively based on different input information.
-
-The solution of selective state space models (Mamba~\citep{gu2023mamba}) is that, compared to state space models that compress all historical information, they design a simple selection mechanism that parameterizes the input of the state space model,making $(\Delta t, B, C)$  a function of the input.
+% \section{Background}
+% \subsection{Selective State Space Models}
 
 
-\subsection{Theorems and such}
-The preferred way is to number definitions, propositions, lemmas, etc. consecutively, within sections, as shown below.
-\begin{definition}
-\label{def:inj}
-A function $f:X \to Y$ is injective if for any $x,y\in X$ different, $f(x)\ne f(y)$.
-\end{definition}
-Using \cref{def:inj} we immediate get the following result:
-\begin{proposition}
-If $f$ is injective mapping a set $X$ to another set $Y$, 
-the cardinality of $Y$ is at least as large as that of $X$
-\end{proposition}
-\begin{proof} 
-Left as an exercise to the reader. 
-\end{proof}
-\cref{lem:usefullemma} stated next will prove to be useful.
-\begin{lemma}
-\label{lem:usefullemma}
-For any $f:X \to Y$ and $g:Y\to Z$ injective functions, $f \circ g$ is injective.
-\end{lemma}
-\begin{theorem}
-\label{thm:bigtheorem}
-If $f:X\to Y$ is bijective, the cardinality of $X$ and $Y$ are the same.
-\end{theorem}
-An easy corollary of \cref{thm:bigtheorem} is the following:
-\begin{corollary}
-If $f:X\to Y$ is bijective, 
-the cardinality of $X$ is at least as large as that of $Y$.
-\end{corollary}
-\begin{assumption}
-The set $X$ is finite.
-\label{ass:xfinite}
-\end{assumption}
-\begin{remark}
-According to some, it is only the finite case (cf. \cref{ass:xfinite}) that is interesting.
-\end{remark}
-%restatable
+% Selective state space models~\cite{gu2023mamba} consider that a fundamental problem in sequence modeling is to compress the context into a smaller state. From this perspective, the attention mechanism of Transformers explicitly stores the entire context information, as if reviewing all previous inputs and generated tokens before writing each token. In contrast, RNNs only refer to a fixed number of previous tokens each time, which allows for faster writing but may forget key tokens.
 
-\subsection{Citations and References}
+% In the precursor state space models of selective state space models, there are 4 parameters$(\Delta t, A, B, C)$, and they do not change with the input. These parameters control the following two stages:
+% \begin{align}
+%    h'(t) &= Ah(t) + Bx(t) \quad \text{(1a)} \nonumber \\
+%    y(t) &= Ch(t) \quad \text{(1b)} \nonumber \\
+%    h_t &= \overline{A}h_{t-1} + \overline{B}x_t \quad \text{(2a)} \nonumber \\
+%    y_t &= Ch_t \quad \text{(2b)} \nonumber \\
+%    \overline{K} &= (C\overline{B}, C\overline{A}\overline{B}, \ldots, C\overline{A}^{k-1}\overline{B}, \ldots) \quad \text{(3a)} \nonumber \\
+%    y &= x * \overline{K} \quad \text{(3b)} \nonumber
+% \end{align}
+% \begin{itemize}
+%    \item In the first stage (1a \& 1b), the continuous parameters $h'(t)$ are transformed into discrete parameters $h_t$ through a fixed formula $\overline{A} = f_A(\Delta t, A)$ and $\overline{B} = f_B(\Delta t, A, B)$, where $(f_A, f_B)$ is called the discretization rule. The most common is the zero-order hold (ZOH) rule, defined as $\overline{A} = \exp(\Delta t A)$ and $\overline{B} = (\Delta t A)^{-1} (\exp(\Delta t A) - I) \cdot \Delta t B$.
+%    \item In the second stage (2a \& 2b and 3a \& 3b), after the parameters are transformed from $(\Delta t, A, B, C)$ to $(\overline{A}, \overline{B}, C)$, linear recursion or global convolution can be used for computation.
+% \end{itemize}
+% State space models cannot update states selectively based on different input information.
 
-Please use APA reference format regardless of your formatter
-or word processor. If you rely on the \LaTeX\/ bibliographic
-facility, use \texttt{natbib.sty} and \texttt{icml2025.bst}
-included in the style-file package to obtain this format.
+% The solution of selective state space models (Mamba~\citep{gu2023mamba}) is that, compared to state space models that compress all historical information, they design a simple selection mechanism that parameterizes the input of the state space model,making $(\Delta t, B, C)$  a function of the input.
 
-Citations within the text should include the authors' last names and
-year. If the authors' names are included in the sentence, place only
-the year in parentheses, for example when referencing Arthur Samuel's
-pioneering work \yrcite{Samuel59}. Otherwise place the entire
-reference in parentheses with the authors and year separated by a
-comma \cite{Samuel59}. List multiple references separated by
-semicolons \cite{kearns89,Samuel59,mitchell80}. Use the `et~al.'
-construct only for citations with three or more authors or after
-listing all authors to a publication in an earlier reference \cite{MachineLearningI}.
 
-Authors should cite their own work in the third person
-in the initial version of their paper submitted for blind review.
-Please refer to \cref{author info} for detailed instructions on how to
-cite your own papers.
+% \subsection{Theorems and such}
+% The preferred way is to number definitions, propositions, lemmas, etc. consecutively, within sections, as shown below.
+% \begin{definition}
+% \label{def:inj}
+% A function $f:X \to Y$ is injective if for any $x,y\in X$ different, $f(x)\ne f(y)$.
+% \end{definition}
+% Using \cref{def:inj} we immediate get the following result:
+% \begin{proposition}
+% If $f$ is injective mapping a set $X$ to another set $Y$, 
+% the cardinality of $Y$ is at least as large as that of $X$
+% \end{proposition}
+% \begin{proof} 
+% Left as an exercise to the reader. 
+% \end{proof}
+% \cref{lem:usefullemma} stated next will prove to be useful.
+% \begin{lemma}
+% \label{lem:usefullemma}
+% For any $f:X \to Y$ and $g:Y\to Z$ injective functions, $f \circ g$ is injective.
+% \end{lemma}
+% \begin{theorem}
+% \label{thm:bigtheorem}
+% If $f:X\to Y$ is bijective, the cardinality of $X$ and $Y$ are the same.
+% \end{theorem}
+% An easy corollary of \cref{thm:bigtheorem} is the following:
+% \begin{corollary}
+% If $f:X\to Y$ is bijective, 
+% the cardinality of $X$ is at least as large as that of $Y$.
+% \end{corollary}
+% \begin{assumption}
+% The set $X$ is finite.
+% \label{ass:xfinite}
+% \end{assumption}
+% \begin{remark}
+% According to some, it is only the finite case (cf. \cref{ass:xfinite}) that is interesting.
+% \end{remark}
+% %restatable
 
-Use an unnumbered first-level section heading for the references, and use a
-hanging indent style, with the first line of the reference flush against the
-left margin and subsequent lines indented by 10 points. The references at the
-end of this document give examples for journal articles \cite{Samuel59},
-conference publications \cite{langley00}, book chapters \cite{Newell81}, books
-\cite{DudaHart2nd}, edited volumes \cite{MachineLearningI}, technical reports
-\cite{mitchell80}, and dissertations \cite{kearns89}.
+% \subsection{Citations and References}
 
-Alphabetize references by the surnames of the first authors, with
-single author entries preceding multiple author entries. Order
-references for the same authors by year of publication, with the
-earliest first. Make sure that each reference includes all relevant
-information (e.g., page numbers).
+% Please use APA reference format regardless of your formatter
+% or word processor. If you rely on the \LaTeX\/ bibliographic
+% facility, use \texttt{natbib.sty} and \texttt{icml2025.bst}
+% included in the style-file package to obtain this format.
 
-Please put some effort into making references complete, presentable, and
-consistent, e.g. use the actual current name of authors.
-If using bibtex, please protect capital letters of names and
-abbreviations in titles, for example, use \{B\}ayesian or \{L\}ipschitz
-in your .bib file.
+% Citations within the text should include the authors' last names and
+% year. If the authors' names are included in the sentence, place only
+% the year in parentheses, for example when referencing Arthur Samuel's
+% pioneering work \yrcite{Samuel59}. Otherwise place the entire
+% reference in parentheses with the authors and year separated by a
+% comma \cite{Samuel59}. List multiple references separated by
+% semicolons \cite{kearns89,Samuel59,mitchell80}. Use the `et~al.'
+% construct only for citations with three or more authors or after
+% listing all authors to a publication in an earlier reference \cite{MachineLearningI}.
 
-\section*{Accessibility}
-Authors are kindly asked to make their submissions as accessible as possible for everyone including people with disabilities and sensory or neurological differences.
-Tips of how to achieve this and what to pay attention to will be provided on the conference website \url{http://icml.cc/}.
+% Authors should cite their own work in the third person
+% in the initial version of their paper submitted for blind review.
+% Please refer to \cref{author info} for detailed instructions on how to
+% cite your own papers.
 
-\section*{Software and Data}
+% Use an unnumbered first-level section heading for the references, and use a
+% hanging indent style, with the first line of the reference flush against the
+% left margin and subsequent lines indented by 10 points. The references at the
+% end of this document give examples for journal articles \cite{Samuel59},
+% conference publications \cite{langley00}, book chapters \cite{Newell81}, books
+% \cite{DudaHart2nd}, edited volumes \cite{MachineLearningI}, technical reports
+% \cite{mitchell80}, and dissertations \cite{kearns89}.
 
-If a paper is accepted, we strongly encourage the publication of software and data with the
-camera-ready version of the paper whenever appropriate. This can be
-done by including a URL in the camera-ready copy. However, \textbf{do not}
-include URLs that reveal your institution or identity in your
-submission for review. Instead, provide an anonymous URL or upload
-the material as ``Supplementary Material'' into the OpenReview reviewing
-system. Note that reviewers are not required to look at this material
-when writing their review.
+% Alphabetize references by the surnames of the first authors, with
+% single author entries preceding multiple author entries. Order
+% references for the same authors by year of publication, with the
+% earliest first. Make sure that each reference includes all relevant
+% information (e.g., page numbers).
 
-% Acknowledgements should only appear in the accepted version.
-\section*{Acknowledgements}
+% Please put some effort into making references complete, presentable, and
+% consistent, e.g. use the actual current name of authors.
+% If using bibtex, please protect capital letters of names and
+% abbreviations in titles, for example, use \{B\}ayesian or \{L\}ipschitz
+% in your .bib file.
 
-\textbf{Do not} include acknowledgements in the initial version of
-the paper submitted for blind review.
+% \section*{Accessibility}
+% Authors are kindly asked to make their submissions as accessible as possible for everyone including people with disabilities and sensory or neurological differences.
+% Tips of how to achieve this and what to pay attention to will be provided on the conference website \url{http://icml.cc/}.
 
-If a paper is accepted, the final camera-ready version can (and
-usually should) include acknowledgements.  Such acknowledgements
-should be placed at the end of the section, in an unnumbered section
-that does not count towards the paper page limit. Typically, this will 
-include thanks to reviewers who gave useful comments, to colleagues 
-who contributed to the ideas, and to funding agencies and corporate 
-sponsors that provided financial support.
+% \section*{Software and Data}
 
-\section*{Impact Statement}
+% If a paper is accepted, we strongly encourage the publication of software and data with the
+% camera-ready version of the paper whenever appropriate. This can be
+% done by including a URL in the camera-ready copy. However, \textbf{do not}
+% include URLs that reveal your institution or identity in your
+% submission for review. Instead, provide an anonymous URL or upload
+% the material as ``Supplementary Material'' into the OpenReview reviewing
+% system. Note that reviewers are not required to look at this material
+% when writing their review.
 
-Authors are \textbf{required} to include a statement of the potential 
-broader impact of their work, including its ethical aspects and future 
-societal consequences. This statement should be in an unnumbered 
-section at the end of the paper (co-located with Acknowledgements -- 
-the two may appear in either order, but both must be before References), 
-and does not count toward the paper page limit. In many cases, where 
-the ethical impacts and expected societal implications are those that 
-are well established when advancing the field of Machine Learning, 
-substantial discussion is not required, and a simple statement such 
-as the following will suffice:
+% % Acknowledgements should only appear in the accepted version.
+% \section*{Acknowledgements}
 
-``This paper presents work whose goal is to advance the field of 
-Machine Learning. There are many potential societal consequences 
-of our work, none which we feel must be specifically highlighted here.''
+% \textbf{Do not} include acknowledgements in the initial version of
+% the paper submitted for blind review.
 
-The above statement can be used verbatim in such cases, but we 
-encourage authors to think about whether there is content which does 
-warrant further discussion, as this statement will be apparent if the 
-paper is later flagged for ethics review.
+% If a paper is accepted, the final camera-ready version can (and
+% usually should) include acknowledgements.  Such acknowledgements
+% should be placed at the end of the section, in an unnumbered section
+% that does not count towards the paper page limit. Typically, this will 
+% include thanks to reviewers who gave useful comments, to colleagues 
+% who contributed to the ideas, and to funding agencies and corporate 
+% sponsors that provided financial support.
+
+% \section*{Impact Statement}
+
+% Authors are \textbf{required} to include a statement of the potential 
+% broader impact of their work, including its ethical aspects and future 
+% societal consequences. This statement should be in an unnumbered 
+% section at the end of the paper (co-located with Acknowledgements -- 
+% the two may appear in either order, but both must be before References), 
+% and does not count toward the paper page limit. In many cases, where 
+% the ethical impacts and expected societal implications are those that 
+% are well established when advancing the field of Machine Learning, 
+% substantial discussion is not required, and a simple statement such 
+% as the following will suffice:
+
+% ``This paper presents work whose goal is to advance the field of 
+% Machine Learning. There are many potential societal consequences 
+% of our work, none which we feel must be specifically highlighted here.''
+
+% The above statement can be used verbatim in such cases, but we 
+% encourage authors to think about whether there is content which does 
+% warrant further discussion, as this statement will be apparent if the 
+% paper is later flagged for ethics review.
 
 
 % In the unusual situation where you want a paper to appear in the
 % references without citing it in the main text, use \nocite
-\nocite{langley00}
+% \nocite{langley00}
 
 \bibliography{paper}
 \bibliographystyle{icml2025}
