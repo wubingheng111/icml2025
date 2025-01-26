@@ -128,33 +128,70 @@ Our research and evaluation show that Self-Attention before LM-Head can achieve 
       % 状态空间和自注意力都使用相同的位置编码, 并且在 LM-Head 之前使用自注意力和前馈网络构成的 Transformer 块, 无论模型骨干的其他部分如何组合.
      \textbf{Self-Attention before LM-Head}.
       The state-space and self-attention both use the same positional encoding, and a Transformer block composed of self-attention and feed-forward networks is used before the LM-Head, regardless of how the other parts of the model backbone are combined.
-   }
+      }
+      \textbf{}
+
+
    \label{fig:architecture}
 \end{figure*}
 
 
-% \section{Background}
-% \subsection{Selective State Space Models}
+\section{Background}
+\subsection{Selective State Space Models}
 
 
-% Selective state space models~\cite{gu2023mamba} consider that a fundamental problem in sequence modeling is to compress the context into a smaller state. From this perspective, the attention mechanism of Transformers explicitly stores the entire context information, as if reviewing all previous inputs and generated tokens before writing each token. In contrast, RNNs only refer to a fixed number of previous tokens each time, which allows for faster writing but may forget key tokens.
+% 在自然语言处理（NLP）领域，SSM被用于建模文本序列的动态特性。其优势在于能够高效地处理长序列数据，并通过状态变量的更新机制捕捉序列中的时间依赖性。然而，传统的SSM存在一些局限性，例如线性时不变（LTI）系统的矩阵参数（如A、B、C）在整个序列生成过程中保持固定，这使得模型难以进行内容感知的推理。例如，在处理需要选择性关注或忽略特定输入的任务时，传统SSM的表现不如基于自注意力机制的Transformer模型。
+In the field of natural language processing (NLP), SSM is used to model the dynamic characteristics of text sequences. Its advantage is that it can efficiently handle long sequence data and capture the time dependency in the sequence through the update mechanism of the state variables. However, traditional SSM has some limitations, such as the matrix parameters (such as A, B, C) of the linear time-invariant (LTI) system remain fixed throughout the entire sequence generation process, making it difficult for the model to perform content-aware reasoning. For example, when dealing with tasks that require selective attention or ignoring specific inputs, the performance of traditional SSM is not as good as the Transformer model based on the self-attention mechanism.
 
-% In the precursor state space models of selective state space models, there are 4 parameters$(\Delta t, A, B, C)$, and they do not change with the input. These parameters control the following two stages:
-% \begin{align}
-%    h'(t) &= Ah(t) + Bx(t) \quad \text{(1a)} \nonumber \\
-%    y(t) &= Ch(t) \quad \text{(1b)} \nonumber \\
-%    h_t &= \overline{A}h_{t-1} + \overline{B}x_t \quad \text{(2a)} \nonumber \\
-%    y_t &= Ch_t \quad \text{(2b)} \nonumber \\
-%    \overline{K} &= (C\overline{B}, C\overline{A}\overline{B}, \ldots, C\overline{A}^{k-1}\overline{B}, \ldots) \quad \text{(3a)} \nonumber \\
-%    y &= x * \overline{K} \quad \text{(3b)} \nonumber
-% \end{align}
-% \begin{itemize}
-%    \item In the first stage (1a \& 1b), the continuous parameters $h'(t)$ are transformed into discrete parameters $h_t$ through a fixed formula $\overline{A} = f_A(\Delta t, A)$ and $\overline{B} = f_B(\Delta t, A, B)$, where $(f_A, f_B)$ is called the discretization rule. The most common is the zero-order hold (ZOH) rule, defined as $\overline{A} = \exp(\Delta t A)$ and $\overline{B} = (\Delta t A)^{-1} (\exp(\Delta t A) - I) \cdot \Delta t B$.
-%    \item In the second stage (2a \& 2b and 3a \& 3b), after the parameters are transformed from $(\Delta t, A, B, C)$ to $(\overline{A}, \overline{B}, C)$, linear recursion or global convolution can be used for computation.
-% \end{itemize}
-% State space models cannot update states selectively based on different input information.
+\noindent
+\begin{minipage}{0.48\textwidth}
+\small
+\begin{align}
+   h'(t) &= A h(t) + B x(t) \\
+   y(t) &= C h(t)
+\end{align}
+\end{minipage}
+\begin{minipage}{0.48\textwidth}
+\small
+\begin{align}
+   h'(t) &= A h(t) + B x(t) \\
+   y(t) &= C h(t)
+\end{align}
+\end{minipage}
 
-% The solution of selective state space models (Mamba~\citep{gu2023mamba}) is that, compared to state space models that compress all historical information, they design a simple selection mechanism that parameterizes the input of the state space model,making $(\Delta t, B, C)$  a function of the input.
+\noindent
+\begin{minipage}{0.48\textwidth}
+\small
+\begin{align}
+   h'(t) &= A h(t) + B x(t) \\
+   y(t) &= C h(t)
+\end{align}
+\end{minipage}
+\begin{minipage}{0.48\textwidth}
+\small
+\begin{align}
+   h'(t) &= A h(t) + B x(t) \\
+   y(t) &= C h(t)
+\end{align}
+\end{minipage}
+
+
+
+%为了克服这些局限性，研究者们提出了多种改进方法。例如，~\cite{mamba2}模型通过引入选择性扫描算法（Selective Scan）和硬件感知算法（Hardware-Aware Algorithm），使得SSM能够动态调整参数，从而更好地处理长序列数据并提高计算效率。这种改进的SSM，也被称为选择性状态空间模型（Selective SSM，简称S6），追求能够像Transformer一样构建高效的序列处理模块。但是即便如此，它仍然不如CNN 和 Transformer在计算上高效，而现代并行计算设备的发展使得这种计算效率的差距变得更加明显, 从而限制了SSM在更大规模的序列数据上的训练,因此揭示选择性SSM和注意力机制之间的更深层次关系, 并提出一种新的混合建模架构, 以克服这些局限性是非常重要的.
+
+To overcome these limitations, researchers have proposed various improvement methods. For example, the Mamba~\cite{gu2023mamba} model introduces the Selective Scan algorithm and the Hardware-Aware Algorithm, allowing SSM to dynamically adjust parameters to better handle long sequence data and improve computational efficiency. This improved SSM, also known as Selective State Space Model (Selective SSM, abbreviated as S6), aims to build an efficient sequence processing module like Transformer. However, even so, it is still not as computationally efficient as CNN and Transformer, and the development of modern parallel computing devices makes this computational efficiency gap more pronounced, limiting the training of SSM on larger-scale sequence data. Therefore, it is very important to reveal a deeper relationship between Selective SSM and the attention mechanism and propose a new hybrid modeling architecture to overcome these limitations.
+
+
+
+\subsection{Attention and SSM}
+% 在Transformer模型中，自注意力机制通过计算查询（Query）、键（Key）和值（Value）之间的相似度来确定各个位置的重要性权重。具体来说，自注意力机制首先计算查询和键之间的点积，然后通过softmax函数将这些点积转换为注意力权重，最后将这些权重应用于值向量，以生成加权的上下文表示。
+In the Transformer model, the self-attention mechanism determines the importance weights of each position by calculating the similarity between queries, keys, and values. Specifically, the self-attention mechanism first calculates the dot product between the query and the key, then converts these dot products into attention weights through the softmax function, and finally applies these weights to the value vector to generate a weighted context representation.
+
+\subsection{Hybrid Modeling}
+
+
+
+
 
 
 % \subsection{Theorems and such}
