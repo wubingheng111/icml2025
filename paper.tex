@@ -193,141 +193,14 @@ In the Transformer model, the self-attention mechanism determines the importance
 
 
 
+\section{Method}
 
-% \subsection{Theorems and such}
-% The preferred way is to number definitions, propositions, lemmas, etc. consecutively, within sections, as shown below.
-% \begin{definition}
-% \label{def:inj}
-% A function $f:X \to Y$ is injective if for any $x,y\in X$ different, $f(x)\ne f(y)$.
-% \end{definition}
-% Using \cref{def:inj} we immediate get the following result:
-% \begin{proposition}
-% If $f$ is injective mapping a set $X$ to another set $Y$, 
-% the cardinality of $Y$ is at least as large as that of $X$
-% \end{proposition}
-% \begin{proof} 
-% Left as an exercise to the reader. 
-% \end{proof}
-% \cref{lem:usefullemma} stated next will prove to be useful.
-% \begin{lemma}
-% \label{lem:usefullemma}
-% For any $f:X \to Y$ and $g:Y\to Z$ injective functions, $f \circ g$ is injective.
-% \end{lemma}
-% \begin{theorem}
-% \label{thm:bigtheorem}
-% If $f:X\to Y$ is bijective, the cardinality of $X$ and $Y$ are the same.
-% \end{theorem}
-% An easy corollary of \cref{thm:bigtheorem} is the following:
-% \begin{corollary}
-% If $f:X\to Y$ is bijective, 
-% the cardinality of $X$ is at least as large as that of $Y$.
-% \end{corollary}
-% \begin{assumption}
-% The set $X$ is finite.
-% \label{ass:xfinite}
-% \end{assumption}
-% \begin{remark}
-% According to some, it is only the finite case (cf. \cref{ass:xfinite}) that is interesting.
-% \end{remark}
-% %restatable
+% 以往的混合建模架构模型, 是使用Mamba~\cite{gu2023mamba}块中的一维卷积来隐式进行位置编码, 而删除了自注意力使用的旋转位置编码. 而旋转位置编码并不直接对注意力分数矩阵进行操作, 为了良好的外推性能, 我们可以将其添加到状态空间. 让我们回顾状态空间算法~\ref{}, 首先, 矩阵 $B$ 控制是否让输入 $x_t$ 进入状态 $h_t$, 我们在矩阵 $B$ 中加入旋转位置编码, 矩阵 $B$ 作为输入门对 $x_t$ 筛选后使 $h_t$ 具备了绝对位置信息, 然后, 矩阵 $A$ 控制是否让状态 $h_{t-1}$ 进入状态 $h_t$, 也就是说它也允许过去状态的绝对位置信息影响到当前状态, 最后, 矩阵 $C$ 控制是否让状态 $h_t$ 进入输出 $y_t$, 我们在矩阵 $C$ 中加入旋转位置编码, 矩阵 $C$ 作为输出门对 $h_t$ 筛选后使 $y_t$ 具备了相对位置信息. 但值得注意的是, 由于状态空间的递归性质, 即只保留一个状态的缓存, 位置编码会受到叠加态的影响, 即使原始的一维卷积位置编码也是如此, 这也是它难以进行上下文学习的缺陷. 所以直接使用经过状态空间处理的位置信息, 作为自注意力的位置编码, 难免会导致位置信息的混乱. 为了解决这个问题, 我们应该保留自注意力的旋转位置编码, 重新为自注意力提供原始的位置信息. 
+In the past hybrid modeling architecture models, a one-dimensional convolution in the Mamba~\cite{gu2023mamba} block is used to implicitly perform positional encoding, while the rotational positional encoding used by self-attention is removed. The rotational positional encoding does not directly operate on the attention score matrix. For good extrapolation performance, we can add it to the state space. Let's review the state-space algorithm~\ref{}, first, the matrix $B$ controls whether to let the input $x_t$ enter the state $h_t$, we add rotational positional encoding to the matrix $B$, the matrix $B$ as an input gate filters $x_t$ after $h_t$ has absolute positional information, then, the matrix $A$ controls whether to let the state $h_{t-1}$ enter the state $h_t$, that is, it also allows the absolute positional information of the past state to affect the current state, finally, the matrix $C$ controls whether to let the state $h_t$ enter the output $y_t$, we add rotational positional encoding to the matrix $C$, the matrix $C$ as an output gate filters $h_t$ after $y_t$ has relative positional information. However, it is worth noting that due to the recursive nature of the state space, that is, only one state cache is retained, the positional encoding will be affected by the superposition state, even the original one-dimensional convolution positional encoding is the same, which is also its difficulty in context learning defect. So using the position information processed by the state space directly as the positional encoding of self-attention will inevitably lead to the confusion of position information. To solve this problem, we should retain the rotational positional encoding of self-attention and provide the original position information for self-attention.
 
-% \subsection{Citations and References}
+% 状态空间的计算量随着序列长度 $T$ 呈线性增长的特性这里不再赘述, 其数据依赖化的相关参数可以使模型具备信息的选择性处理能力, 线性递归赋予的聚合状态可以让我们只计算last token. 当然, 通过函数逼近产生状态矩阵 $A$ 的最优解来记住历史的方式, 只能精确捕捉到 $h_{t-1}$ 到 $h_t$ 的状态变化, 而逐渐衰减旧的状态信息, 这就导致了在需要强大的复制能力或上下文学习能力或长上下文推理能力的任务上, 在预测 token 之前, 状态空间的信息摘要会产生偏差. 为了解决这个问题, 我们应该在 LM-Head 之前使用没有压缩上下文信息, 可以不受距离限制对元素加权而产生上下文感知状态的自注意力和前馈网络构成的 Transformer 块, 使模型能够继续利用状态空间的高效上下文摘要和自注意力有效联想召回的优势, 而不会在最终的token预测上产生偏差.
+The computational complexity of the state space grows linearly with the sequence length $T$, and its data-dependent related parameters can enable the model to have the ability to selectively process information. The linear recursion gives the aggregated state that allows us to calculate only the last token. Of course, by approximating the function to generate the optimal solution of the state matrix $A$ to remember history, it can only accurately capture the state change from $h_{t-1}$ to $h_t$ and gradually decay the old state information, which leads to the need for strong replication, context learning, or long-context reasoning capabilities. In tasks that require powerful capabilities, before predicting the token, the information summary of the state space will produce bias. To solve this problem, we should use self-attention and feed-forward networks that do not compress context information before the LM-Head, which can produce context-aware states by weighting elements without distance restrictions, allowing the model to continue to leverage the efficient context summary of the state space and the effective associative recall of self-attention without bias in the final token prediction.
 
-% Please use APA reference format regardless of your formatter
-% or word processor. If you rely on the \LaTeX\/ bibliographic
-% facility, use \texttt{natbib.sty} and \texttt{icml2025.bst}
-% included in the style-file package to obtain this format.
-
-% Citations within the text should include the authors' last names and
-% year. If the authors' names are included in the sentence, place only
-% the year in parentheses, for example when referencing Arthur Samuel's
-% pioneering work \yrcite{Samuel59}. Otherwise place the entire
-% reference in parentheses with the authors and year separated by a
-% comma \cite{Samuel59}. List multiple references separated by
-% semicolons \cite{kearns89,Samuel59,mitchell80}. Use the `et~al.'
-% construct only for citations with three or more authors or after
-% listing all authors to a publication in an earlier reference \cite{MachineLearningI}.
-
-% Authors should cite their own work in the third person
-% in the initial version of their paper submitted for blind review.
-% Please refer to \cref{author info} for detailed instructions on how to
-% cite your own papers.
-
-% Use an unnumbered first-level section heading for the references, and use a
-% hanging indent style, with the first line of the reference flush against the
-% left margin and subsequent lines indented by 10 points. The references at the
-% end of this document give examples for journal articles \cite{Samuel59},
-% conference publications \cite{langley00}, book chapters \cite{Newell81}, books
-% \cite{DudaHart2nd}, edited volumes \cite{MachineLearningI}, technical reports
-% \cite{mitchell80}, and dissertations \cite{kearns89}.
-
-% Alphabetize references by the surnames of the first authors, with
-% single author entries preceding multiple author entries. Order
-% references for the same authors by year of publication, with the
-% earliest first. Make sure that each reference includes all relevant
-% information (e.g., page numbers).
-
-% Please put some effort into making references complete, presentable, and
-% consistent, e.g. use the actual current name of authors.
-% If using bibtex, please protect capital letters of names and
-% abbreviations in titles, for example, use \{B\}ayesian or \{L\}ipschitz
-% in your .bib file.
-
-% \section*{Accessibility}
-% Authors are kindly asked to make their submissions as accessible as possible for everyone including people with disabilities and sensory or neurological differences.
-% Tips of how to achieve this and what to pay attention to will be provided on the conference website \url{http://icml.cc/}.
-
-% \section*{Software and Data}
-
-% If a paper is accepted, we strongly encourage the publication of software and data with the
-% camera-ready version of the paper whenever appropriate. This can be
-% done by including a URL in the camera-ready copy. However, \textbf{do not}
-% include URLs that reveal your institution or identity in your
-% submission for review. Instead, provide an anonymous URL or upload
-% the material as ``Supplementary Material'' into the OpenReview reviewing
-% system. Note that reviewers are not required to look at this material
-% when writing their review.
-
-% % Acknowledgements should only appear in the accepted version.
-% \section*{Acknowledgements}
-
-% \textbf{Do not} include acknowledgements in the initial version of
-% the paper submitted for blind review.
-
-% If a paper is accepted, the final camera-ready version can (and
-% usually should) include acknowledgements.  Such acknowledgements
-% should be placed at the end of the section, in an unnumbered section
-% that does not count towards the paper page limit. Typically, this will 
-% include thanks to reviewers who gave useful comments, to colleagues 
-% who contributed to the ideas, and to funding agencies and corporate 
-% sponsors that provided financial support.
-
-% \section*{Impact Statement}
-
-% Authors are \textbf{required} to include a statement of the potential 
-% broader impact of their work, including its ethical aspects and future 
-% societal consequences. This statement should be in an unnumbered 
-% section at the end of the paper (co-located with Acknowledgements -- 
-% the two may appear in either order, but both must be before References), 
-% and does not count toward the paper page limit. In many cases, where 
-% the ethical impacts and expected societal implications are those that 
-% are well established when advancing the field of Machine Learning, 
-% substantial discussion is not required, and a simple statement such 
-% as the following will suffice:
-
-% ``This paper presents work whose goal is to advance the field of 
-% Machine Learning. There are many potential societal consequences 
-% of our work, none which we feel must be specifically highlighted here.''
-
-% The above statement can be used verbatim in such cases, but we 
-% encourage authors to think about whether there is content which does 
-% warrant further discussion, as this statement will be apparent if the 
-% paper is later flagged for ethics review.
-
-
-% In the unusual situation where you want a paper to appear in the
-% references without citing it in the main text, use \nocite
-% \nocite{langley00}
 
 \bibliography{paper}
 \bibliographystyle{icml2025}
