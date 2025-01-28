@@ -180,11 +180,30 @@ Starting from the state-space model of continuous-time systems, the discrete-tim
 
  The above is the process of SSM-S4. All structured SSMs are LTI models, and LTI models have basic efficiency limitations. To overcome these limitations, researchers have proposed various improvement methods. For example, the Mamba~\cite{mamba2} model introduces the Selective Scan algorithm and the Hardware-Aware Algorithm, allowing SSM to dynamically adjust parameters to better handle long sequence data and improve computational efficiency. This improved SSM, also known as Selective State Space Model (Selective SSM, referred to as S6), aims to build efficient sequence processing modules like Transformer. However, even so, it is still not as efficient as CNN and Transformer in computation, and the development of modern parallel computing devices makes this computational efficiency gap more obvious, thereby limiting the training of SSM on larger-scale sequence data. Therefore, it is very important to reveal the deeper relationship between Selective SSM and the attention mechanism and propose a new hybrid modeling architecture to overcome these limitations.
 
-\subsection{Attention and SSM}
+\subsection{Self Attention}
 % 在Transformer模型中，自注意力机制通过计算查询（Query）、键（Key）和值（Value）之间的相似度来确定各个位置的重要性权重。具体来说，自注意力机制首先计算查询和键之间的点积，然后通过softmax函数将这些点积转换为注意力权重，最后将这些权重应用于值向量，以生成加权的上下文表示。
 In the Transformer model, the self-attention mechanism determines the importance weights of each position by calculating the similarity between queries, keys, and values. Specifically, the self-attention mechanism first calculates the dot product between the query and the key, then converts these dot products into attention weights through the softmax function, and finally applies these weights to the value vector to generate a weighted context representation.
 
+
+\begin{equation}
+   \begin{aligned}
+      Y &= \operatorname*{softmax}({QK^\top}) \cdot V   \end{aligned}
+   \end{equation}
+
+
+
+% 通过自注意力机制，Transformer模型能够直接捕捉序列中任意两个元素之间的关系，从而有效处理长距离依赖问题。然而，自注意力机制的二次复杂度限制了Transformer模型的计算效率，使得其在处理长序列数据时表现不佳。为了克服这一局限性，研究者们提出了许多改进方法，例如~\cite{lin2021efficient}提出了一种基于局部敏感哈希的自注意力机制，通过减少查询和键之间的点积计算量，从而提高了Transformer模型的计算效率。同样, 这种改进方法仍然无法完全解决Transformer模型的计算效率问题, 因此揭示自注意力机制和状态空间之间的更深层次关系, 并提出一种新的混合建模架构, 以克服这些局限性是非常重要的.
+
+Through the self-attention mechanism, the Transformer model can directly capture the relationship between any two elements in the sequence, effectively handling long-distance dependency problems. However, the quadratic complexity of the self-attention mechanism limits the computational efficiency of the Transformer model, making it perform poorly when handling long sequence data. To overcome this limitation, researchers have proposed many improvement methods. For example, Lin et al.~\cite{lin2021efficient} proposed a self-attention mechanism based on local sensitive hashing, which reduces the computational cost of dot products between queries and keys, thereby improving the computational efficiency of the Transformer model. Similarly, this improvement method still cannot completely solve the computational efficiency problem of the Transformer model. Therefore, it is very important to reveal the deeper relationship between the self-attention mechanism and the state space and propose a new hybrid modeling architecture to overcome these limitations.
+
+
+
 \subsection{Hybrid Modeling}
+% 混合建模架构模型是一种将状态空间和自注意力进行混合建模的模型，其目的是使模型具备与Mamba类似的效率和与Transformer类似的效果。例如，Wonderful Matrices~\cite{shi2024wonderfulmatrices}模型通过将状态空间和自注意力进行混合建模，使得模型能够同时利用状态空间的高效上下文摘要和自注意力有效联想召回的优势。然而，这些模型在情景学习任务上的表现仍然不如原始的Transformer模型，这表明了混合建模架构模型在情景学习任务上的局限性。
+
+Hybrid modeling architecture models are models that combine state-space and self-attention for hybrid modeling, with the goal of making the model have efficiency similar to Mamba and effect similar to Transformer. For example, the Wonderful Matrices~\cite{shi2024wonderfulmatrices} model combines state-space and self-attention for hybrid modeling, allowing the model to leverage the advantages of the efficient context summary of the state-space and the effective associative recall of self-attention. However, these models still do not perform as well as the original Transformer model in in-context learning tasks, which indicates the limitations of hybrid modeling architecture models in in-context learning tasks.
+
+
 
 
 
