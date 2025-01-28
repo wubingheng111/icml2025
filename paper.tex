@@ -212,7 +212,7 @@ We used the baseline model Jamba~\cite{lieber2024jamba} architecture to first co
 
 \subsection{Datasets and Hyperparameters}
 % 预训练数据集为包含 Book, Wikipedia, UNCorpus, translation2019zh, WikiMatri, news-commentry, ParaCrawlv9, ClueCorpusSmall, CSL, news-crawl 等开源数据集混合而成的数据集.
-The pre-training dataset is a mixed dataset containing open-source datasets such as Book, Wikipedia, UNCorpus, translation2019zh, WikiMatri, news-commentry, ParaCrawlv9, ClueCorpusSmall, CSL, news-crawl, etc.
+The pre-training dataset is a mixed dataset containing open-source datasets such as Book~\cite{bookcrossing_dataset}, Wikipedia~\cite{wikipedia_dataset}, UNCorpus~\cite{uncorpus_dataset}, translation2019zh~\cite{translation2019zh_dataset}, WikiMatri~\cite{WikiMatri}, news-commentry~\cite{newscommentary_dataset}, ParaCrawlv9~\cite{paracrawl_dataset}, ClueCorpusSmall~\cite{cluecorpusSmall_dataset}, CSL~\cite{li-etal-2022-csl}, news-crawl~\cite{newscrawl_dataset}, etc.
 
 % 学习率调度器公式来源于 Attention is All You Need~\citep{wolf-etal-2020-transformers}.
 The learning rate scheduler function comes from Attention is All You Need~\cite{wolf-etal-2020-transformers}.
@@ -291,12 +291,6 @@ For tasks like AFQMC that judge whether sentences have the same meaning, CSL tha
    \bottomrule
    \end{tabular}
 \end{table*}
-
-
-\subsection{Associative Recall}
-\label{sec:Associative_Recall}
-
-% 我们在序列长度为 2048 的 80\% 的预训练数据集上训练了 1B 参数的 Jamba 模型与 1B 参数的 OTCE 模型,  然后将剩余的 20\% 的预训练数据集打包为 8K 上下文长度的数据集继续对模型进行预训练, 随后将微调数据集同样打包为 8K 上下文长度的数据集对模型进行微调, 将两个模型扩展到 8K 长度的上下文长度进行评估, 两个模型的参数设置如表~\ref{tab:associative_recall_params_zh} 所示.
 
 
 
