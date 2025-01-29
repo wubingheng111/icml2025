@@ -104,8 +104,8 @@
 \begin{abstract}
 % 最近的研究表明, 将状态空间算法驱动的 Mamba 与自注意力算法驱动的 Transformer 相结合, 在大多数语言建模任务上的表现超越了单独使用 Mamba 或 Transformer. 
 % 但是, 目前主流的混合建模架构模型在情景学习任务上的表现并不理想, 我们重新审视了这两种算法的优势和劣势, 从原理出发对这种混合建模的结构重新设计. 
-% 最终, 重新设计的架构, 在标准短文本任务中提升了 1.3 \% 效果, 在自然长文本任务中提升了 20.86 \% 效果, 在合成长文本任务中提升了 27.06 \% 效果.
-Recent research has shown that combining the state-space algorithm-driven Mamba with the self-attention algorithm-driven Transformer outperforms using Mamba or Transformer alone in most language modeling tasks. However, the performance of the mainstream hybrid modeling architecture models in in-context learning tasks is not ideal. We re-examine the advantages and disadvantages of these two algorithms and redesign the structure of this hybrid modeling from the principle. The finally redesigned architecture improves the performance by 1.3\% in standard short text tasks, 20.86\% in natural long text tasks, and 27.06\% in synthetic long text tasks.
+% 最终, 重新设计的架构, 在标准短文本任务中提升了 1.1 \% 效果, 在自然长文本任务中提升了 20.86 \% 效果, 在合成长文本任务中提升了 24.15 \% 效果.
+Recent research has shown that combining the state-space algorithm-driven Mamba with the self-attention algorithm-driven Transformer outperforms using Mamba or Transformer alone in most language modeling tasks. However, the performance of the mainstream hybrid modeling architecture models in in-context learning tasks is not ideal. We re-examine the advantages and disadvantages of these two algorithms and redesign the structure of this hybrid modeling from the principle. The finally redesigned architecture improves the performance by 1.1\% in standard short text tasks, 20.86\% in natural long text tasks, and 24.15\% in synthetic long text tasks.
 \end{abstract}
 
 \section{Introduction}
@@ -118,8 +118,8 @@ The self-attention algorithm of the Transformers~\cite{wolf-etal-2020-transforme
 % 我们提出了 Self-Attention before LM-Head~\ref{fig:architecture}, 这是对现有的混合堆叠架构模型的一种简单改变, 将状态空间和自注意力修改为使用相同的位置编码, 并在 LM-Head 预测概率分布之前使用自注意力和前馈网络构成的 Transformer 块. 这种方法使得模型能够继续利用状态空间的高效上下文摘要和自注意力有效联想召回的优势, 而不会在最终的token预测上产生偏差.
 We propose Self-Attention before LM-Head~\ref{fig:architecture}, which is a simple change to the existing hybrid stacked architecture models, modifying the state-space and self-attention to use the same positional encoding, and using a Transformer block composed of self-attention and feed-forward networks before the LM-Head predicts the probability distribution. This method allows the model to continue to leverage the advantages of the efficient context summary of the state-space and the effective associative recall of self-attention without bias in the final token prediction.
 
-% 我们的研究与评估表明, Self-Attention before LM-Head 只需要很少的结构与参数调整, 就能够与基线混合模型相比, 在上下文学习任务基准上取得更好的性能. 例如, 在标准短文本任务中, 我们的模型提升了 1.3 \% 的效果, 在自然长文本任务中提升了 20.86 \% 的效果, 在合成长文本任务中提升了 27.06 \% 的效果, 并且在大海捞针任务上取得了最先进的效果.
-Our research and evaluation show that Self-Attention before LM-Head can achieve better performance on the in-context learning task benchmark compared to the baseline hybrid model with only a few structural and parameter adjustments. For example, in standard short text tasks, our model improves performance by 1.3\%, in natural long text tasks by 20.86\%, in synthetic long text tasks by 27.06\%, and achieves state-of-the-art performance on the needle in a haystack task.
+% 我们的研究与评估表明, Self-Attention before LM-Head 只需要很少的结构与参数调整, 就能够与基线混合模型相比, 在上下文学习任务基准上取得更好的性能. 例如, 在标准短文本任务中, 我们的模型提升了 1.1 \% 的效果, 在自然长文本任务中提升了 20.86 \% 的效果, 在合成长文本任务中提升了 24.15 \% 的效果, 并且在大海捞针任务上取得了最先进的效果.
+Our research and evaluation show that Self-Attention before LM-Head can achieve better performance on the in-context learning task benchmark compared to the baseline hybrid model with only a few structural and parameter adjustments. For example, in standard short text tasks, our model improves performance by 1.1\%, in natural long text tasks by 20.86\%, in synthetic long text tasks by 24.15\%, and achieves state-of-the-art performance on the needle in a haystack task.
 
 \begin{figure*}[ht]
    \centering
@@ -129,9 +129,6 @@ Our research and evaluation show that Self-Attention before LM-Head can achieve 
      \textbf{Self-Attention before LM-Head}.
       The state-space and self-attention both use the same positional encoding, and a Transformer block composed of self-attention and feed-forward networks is used before the LM-Head, regardless of how the other parts of the model backbone are combined.
       }
-      \textbf{}
-
-
    \label{fig:architecture}
 \end{figure*}
 
@@ -212,7 +209,7 @@ We used the baseline model Jamba~\cite{lieber2024jamba} architecture to first co
 
 \subsection{Datasets and Hyperparameters}
 % 预训练数据集为包含 Book, Wikipedia, UNCorpus, translation2019zh, WikiMatri, news-commentry, ParaCrawlv9, ClueCorpusSmall, CSL, news-crawl 等开源数据集混合而成的数据集.
-The pre-training dataset is a mixed dataset containing open-source datasets such as Book~\cite{bookcrossing_dataset}, Wikipedia~\cite{wikipedia_dataset}, UNCorpus~\cite{uncorpus_dataset}, translation2019zh~\cite{translation2019zh_dataset}, WikiMatri~\cite{WikiMatri}, news-commentry~\cite{newscommentary_dataset}, ParaCrawlv9~\cite{paracrawl_dataset}, ClueCorpusSmall~\cite{cluecorpusSmall_dataset}, CSL~\cite{li-etal-2022-csl}, news-crawl~\cite{newscrawl_dataset}, etc.
+The pre-training dataset is a mixed dataset containing open-source datasets such as Book~\cite{bookcrossing_dataset}, Wikipedia~\cite{wikipedia_dataset}, UNCorpus~\cite{uncorpus_dataset}, translation2019zh~\cite{translation2019zh_dataset}, WikiMatri~\cite{wikimatri_dataset}, news-commentry~\cite{newscommentary_dataset}, ParaCrawlv9~\cite{paracrawl_dataset}, ClueCorpusSmall~\cite{cluecorpusSmall_dataset}, CSL~\cite{li-etal-2022-csl}, news-crawl~\cite{newscrawl_dataset}, etc.
 
 % 学习率调度器公式来源于 Attention is All You Need~\citep{wolf-etal-2020-transformers}.
 The learning rate scheduler function comes from Attention is All You Need~\cite{wolf-etal-2020-transformers}.
@@ -233,22 +230,15 @@ In addition, we did not use linear bias terms, the warm-up steps were 10\% of th
 % 我们在表~\ref{tab:Jamba_vs_Jamba-SABLH_Params} 中展示了 Jamba 和 Jamba-SABLH 的参数设置, 在一个Jamba混合循环中, 我们将最后一个模块从state-space模块修改为self-attention模块, 其余参数设置相同.
 As shown in Table~\ref{tab:Jamba_vs_Jamba-SABLH_Params}, we show the parameter settings of Jamba and Jamba-SABLH. In a Jamba hybrid cycle, we modified the last module from a state-space module to a self-attention module, and the rest of the parameters were the same.
 
-% 如表~\ref{tab:Jamba_vs_Jamba-SABLH_Results} 所示, Jamba 与 Jamba-SABLH 在预训练阶段的困惑表现差异微乎其微, 这表明两者从预训练学习到了几乎相同的知识. 然而, 在 SFT 微调阶段, 模型通常需要根据上文记住特定的格式, 并在下文中基于这些格式进行推理. 这已经被证实是以递归方式聚合状态信息的 SSM 的能力缺陷. 而单个 Jamba 块中的 self-attention 部分被嵌入到 state-space 层之间, 导致自注意力的将每个答案的知识直接路由到单个答案 token 的能力所产生的信息状态, 被随后的三个 SSM 层衰减, 最终造成了知识路由的偏差.
-% Jamba-SABLH 在最后一层的将 state-space 所递归聚合的状态信息重新进行了自注意力加权, 这相当于学习并加权了从第一个 token 到最后一个 token 的信息是如何递归聚合的过程. 然后将两种状态信息混合在一起, 这样就有效避免了知识路由偏差. 因此, 我们现在就能够解释为什么 Jamba-SABLH 在大多数验证任务上都有明显优势了.
-As shown in Table~\ref{tab:Jamba_vs_Jamba-SABLH_Results}, the difference in perplexity performance between Jamba and Jamba-SABLH in the pre-training phase is negligible, indicating that the two learned almost the same knowledge from pre-training. However, in the SFT fine-tuning phase, the model usually needs to remember specific formats based on the context and reason based on these formats in the subsequent context. This has been proven to be a deficiency in the ability of SSM to aggregate state information recursively. The self-attention part in a single Jamba block is embedded between the state-space layers, resulting in the information state produced by the ability of self-attention to route the knowledge of each answer directly to a single answer token being decayed by the subsequent three SSM layers, ultimately causing bias in knowledge routing.
-Jamba-SABLH re-weights the state information recursively aggregated by state-space in the last layer with self-attention, which is equivalent to learning and weighting the process of how the information from the first token to the last token is recursively aggregated. Then the two state information is mixed together, effectively avoiding bias in knowledge routing. Therefore, we can now explain why Jamba-SABLH has a significant advantage in most validation tasks.
-
-% 对于 AFQMC 这类判断句子含义是否相同的任务, CSL这类判断关键词是否在摘要中而非从摘要提取关键词的任务, 以及 CMNLI 这类判断两个句子之间是蕴涵, 中立还是矛盾关系的任务, 它们主要依赖于在序列上选择性地提取关键信息并递归地聚合状态信息. 因此, Jamba 和 Jamba-SABLH 在这些任务上的表现差距并不显著, 而 Jamba-SABLH 在 AFQMC 和 CSL 上略微领先的原因可能是因为它修正了一些知识路由偏差. 在 TNEWS 这类对短句进行类别预测的任务中, 由于句子不包含或很少包含上下文信息, 因此非常依赖于预训练和微调的质量.这要求模型在预训练阶段学到的知识能够在微调阶段被正确且精确地引导, 这导致了 Jamba 在 TNEWS 上的表现远不如 Jamba-SABLH. 与 TNEWS 相反, IFLYTEK 任务中的文本全部为长上下文, 并且其中多次出现所属应用主题的词汇. 这构成了一个相对简单的单查询关联召回任务, 其中多次出现的单个主题词汇被选择性状态空间模型允许存储在状态中, 并成为主要影响输出的因素. 因此, 两者在 IFLYTEK 上的表现差距不大. 在 WSC 这类代词消歧任务中, 模型需要在代词出现后能够逆向追溯到代词之前出现的名词, 并将代词指向正确的名词. 这属于在单查询联想回忆任务中, 额外要求了对当前语言的理解能力. 因此, 两者在 WSC 上的表现差距在这些任务中排名第二的原因就很明显了, 两个主要因素是微调的质量差距以及 Jamba-SABLH 预测前对长期强依赖关系逐渐衰减的递归聚合信息的重新全元素关注.
-For tasks like AFQMC that judge whether sentences have the same meaning, CSL that judge whether keywords are in the abstract rather than extracting keywords from the abstract, and CMNLI that judge whether two sentences imply, are neutral, or are contradictory, they mainly rely on selectively extracting key information on the sequence and recursively aggregating state information. Therefore, the performance gap between Jamba and Jamba-SABLH on these tasks is not significant, and the slight lead of Jamba-SABLH on AFQMC and CSL may be due to it correcting some knowledge routing bias. In tasks like TNEWS that predict the category of short sentences, since the sentences do not contain or contain very little context information, they rely heavily on the quality of pre-training and fine-tuning. This requires that the knowledge learned by the model in the pre-training phase can be correctly and accurately guided in the fine-tuning phase, resulting in Jamba's performance on TNEWS being far worse than Jamba-SABLH. In contrast to TNEWS, the text in the IFLYTEK task is all long context, and the vocabulary of the application topic appears multiple times. This constitutes a relatively simple single-query associative recall task, where the selectively stored single topic vocabulary that appears multiple times is allowed to be stored in the state by the selective state-space model and becomes the main factor affecting the output. Therefore, the performance gap between the two on IFLYTEK is not significant. In tasks like WSC that require pronoun disambiguation, the model needs to be able to trace back to the noun that appeared before the pronoun after the pronoun appears and point the pronoun to the correct noun. This belongs to the additional requirement of understanding the current language in the single-query associative recall task. Therefore, the reason for the performance gap between the two on WSC is obvious in these tasks, the two main factors are the difference in the quality of fine-tuning and the re-attention of the recursively aggregated information that gradually decays the long-term strong dependency relationship before prediction by Jamba-SABLH.
-
 \begin{table*}[!htbp]
    \centering
    \caption{
-      \textbf{Parameters of Jamba and Jamba-SABLH}.
+      \textbf{Parameters of Jamba and Jamba-SABLH for Verification}.
       % 在原始Jamba论文中, 每8层为一个混合循环, 包括7个state-space模块, 1个self-attention模块, 和8个MLP模块. 我们仅将最后一个模块修改为self-attention模块, 其余参数设置与Jamba相同, 构造了两个280M左右的模型, 分别是Jamba和Jamba-SABLH. 混合结构中使用S代表state-space模块, A代表self-attention模块, M代表MLP模块.
       In the original Jamba paper, every 8 layers are a hybrid cycle, including 7 state-space modules, 1 self-attention module, and 8 MLP modules. We only modified the last module to a self-attention module, and the rest of the parameters are the same as Jamba. We constructed two models of about 280M, Jamba and Jamba-SABLH. In the hybrid structure, S represents the state-space module, A represents the self-attention module, and M represents the MLP module.
    }
    \label{tab:Jamba_vs_Jamba-SABLH_Params}
+   \vskip 0.15in
    \begin{tabular}{@{}lllllllll@{}}
    \toprule
    \sc{Model} & \sc{Params} & $n_{layers}$ & $d_{model}$ & $d_{ffn}$ & $n_{heads}$ & $d_{state}$ & \sc{Hybrid} \\
@@ -262,7 +252,7 @@ For tasks like AFQMC that judge whether sentences have the same meaning, CSL tha
 \begin{table*}[!htbp]
    \centering
    \caption{
-      \textbf{Results of Jamba and Jamba-SABLH}.
+      \textbf{Results of Jamba and Jamba-SABLH for Verification}.
       %  Jamba 与 Jamba-SABLH 在预训练上的困惑表现差距并不大, 但是在进行 SFT 微调时, Jamba-SABLH 的困惑值明显低于 Jamba. 我们选取了 CLUEbenchmark~\cite{xu-etal-2020-clue} 中对于当前参数量较为合适的评估任务: 
       % AFQMC: 语义相似度, 判断两个句子是含义相同还是不同.
       % TNEWS: 短文本分类, 来自今日头条的新闻板块, 判断新闻的所属类别.
@@ -281,18 +271,91 @@ For tasks like AFQMC that judge whether sentences have the same meaning, CSL tha
       In the validation set inference accuracy of AFQMC, TNEWS, IFLYTEK, WSC, CSL, Jamba-SABLH maintains the lead, slightly behind in CMNLI, and the average accuracy of Jamba-SABLH is $4.25\%$ higher than Jamba.
    }
    \label{tab:Jamba_vs_Jamba-SABLH_Results}
+   \vskip 0.15in
    \begin{tabular}{@{}llllllllll@{}}
    \toprule
    \sc{Model} & \sc{PT} & \sc{SFT} & \sc{AFQMC} & \sc{TNEWS} & \sc{IFLYTEK} & \sc{CMNLI} & \sc{WSC} & \sc{CSL} & \sc{Average} \\
    & \sc{ppl $\downarrow$} & \sc{ppl $\downarrow$} & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} \\
    \midrule
-   Jamba & 2.53 & 1.98 & 78.65 & 63.15 & 72.40 & 79.66 & 76.64 & 84.83 & 75.89 \\
-   Jamba-SABLH & 2.51 & 1.69 & 79.48 & 77.98 & 72.71 & 79.59 & 79.93 & 85.06 & 79.12 \\
+   Jamba & 12.55 & 7.24 & 78.65 & 63.15 & 72.40 & 79.66 & 76.64 & 84.83 & 75.89 \\
+   Jamba-SABLH & 12.30 & 5.42 & 79.48 & 77.98 & 72.71 & 79.59 & 79.93 & 85.06 & 79.12 \\
    \bottomrule
    \end{tabular}
 \end{table*}
 
+% 如表~\ref{tab:Jamba_vs_Jamba-SABLH_Results} 所示, Jamba 与 Jamba-SABLH 在预训练阶段的困惑表现差异微乎其微, 这表明两者从预训练学习到了几乎相同的知识. 然而, 在 SFT 微调阶段, 模型通常需要根据上文记住特定的格式, 并在下文中基于这些格式进行推理. 这已经被证实是以递归方式聚合状态信息的 SSM 的能力缺陷. 而单个 Jamba 块中的 self-attention 部分被嵌入到 state-space 层之间, 导致自注意力的将每个答案的知识直接路由到单个答案 token 的能力所产生的信息状态, 被随后的三个 SSM 层衰减, 最终造成了知识路由的偏差.
+% Jamba-SABLH 在最后一层的将 state-space 所递归聚合的状态信息重新进行了自注意力加权, 这相当于学习并加权了从第一个 token 到最后一个 token 的信息是如何递归聚合的过程. 然后将两种状态信息混合在一起, 这样就有效避免了知识路由偏差. 因此, 我们现在就能够解释为什么 Jamba-SABLH 在大多数验证任务上都有明显优势了.
+As shown in Table~\ref{tab:Jamba_vs_Jamba-SABLH_Results}, the difference in perplexity performance between Jamba and Jamba-SABLH in the pre-training phase is negligible, indicating that the two learned almost the same knowledge from pre-training. However, in the SFT fine-tuning phase, the model usually needs to remember specific formats based on the context and reason based on these formats in the subsequent context. This has been proven to be a deficiency in the ability of SSM to aggregate state information recursively. The self-attention part in a single Jamba block is embedded between the state-space layers, resulting in the information state produced by the ability of self-attention to route the knowledge of each answer directly to a single answer token being decayed by the subsequent three SSM layers, ultimately causing bias in knowledge routing.
+Jamba-SABLH re-weights the state information recursively aggregated by state-space in the last layer with self-attention, which is equivalent to learning and weighting the process of how the information from the first token to the last token is recursively aggregated. Then the two state information is mixed together, effectively avoiding bias in knowledge routing. Therefore, we can now explain why Jamba-SABLH has a significant advantage in most validation tasks.
 
+% 对于 AFQMC 这类判断句子含义是否相同的任务, CSL这类判断关键词是否在摘要中而非从摘要提取关键词的任务, 以及 CMNLI 这类判断两个句子之间是蕴涵, 中立还是矛盾关系的任务, 它们主要依赖于在序列上选择性地提取关键信息并递归地聚合状态信息. 因此, Jamba 和 Jamba-SABLH 在这些任务上的表现差距并不显著, 而 Jamba-SABLH 在 AFQMC 和 CSL 上略微领先的原因可能是因为它修正了一些知识路由偏差. 在 TNEWS 这类对短句进行类别预测的任务中, 由于句子不包含或很少包含上下文信息, 因此非常依赖于预训练和微调的质量.这要求模型在预训练阶段学到的知识能够在微调阶段被正确且精确地引导, 这导致了 Jamba 在 TNEWS 上的表现远不如 Jamba-SABLH. 与 TNEWS 相反, IFLYTEK 任务中的文本全部为长上下文, 并且其中多次出现所属应用主题的词汇. 这构成了一个相对简单的单查询关联召回任务, 其中多次出现的单个主题词汇被选择性状态空间模型允许存储在状态中, 并成为主要影响输出的因素. 因此, 两者在 IFLYTEK 上的表现差距不大. 在 WSC 这类代词消歧任务中, 模型需要在代词出现后能够逆向追溯到代词之前出现的名词, 并将代词指向正确的名词. 这属于在单查询联想回忆任务中, 额外要求了对当前语言的理解能力. 因此, 两者在 WSC 上的表现差距在这些任务中排名第二的原因就很明显了, 两个主要因素是微调的质量差距以及 Jamba-SABLH 预测前对长期强依赖关系逐渐衰减的递归聚合信息的重新全元素关注.
+For tasks like AFQMC that judge whether sentences have the same meaning, CSL that judge whether keywords are in the abstract rather than extracting keywords from the abstract, and CMNLI that judge whether two sentences imply, are neutral, or are contradictory, they mainly rely on selectively extracting key information on the sequence and recursively aggregating state information. Therefore, the performance gap between Jamba and Jamba-SABLH on these tasks is not significant, and the slight lead of Jamba-SABLH on AFQMC and CSL may be due to it correcting some knowledge routing bias. In tasks like TNEWS that predict the category of short sentences, since the sentences do not contain or contain very little context information, they rely heavily on the quality of pre-training and fine-tuning. This requires that the knowledge learned by the model in the pre-training phase can be correctly and accurately guided in the fine-tuning phase, resulting in Jamba's performance on TNEWS being far worse than Jamba-SABLH. In contrast to TNEWS, the text in the IFLYTEK task is all long context, and the vocabulary of the application topic appears multiple times. This constitutes a relatively simple single-query associative recall task, where the selectively stored single topic vocabulary that appears multiple times is allowed to be stored in the state by the selective state-space model and becomes the main factor affecting the output. Therefore, the performance gap between the two on IFLYTEK is not significant. In tasks like WSC that require pronoun disambiguation, the model needs to be able to trace back to the noun that appeared before the pronoun after the pronoun appears and point the pronoun to the correct noun. This belongs to the additional requirement of understanding the current language in the single-query associative recall task. Therefore, the reason for the performance gap between the two on WSC is obvious in these tasks, the two main factors are the difference in the quality of fine-tuning and the re-attention of the recursively aggregated information that gradually decays the long-term strong dependency relationship before prediction by Jamba-SABLH.
+
+\begin{table*}[!htbp]
+   \footnotesize
+   \centering
+   \caption{
+      \textbf{Parameters of Jamba and Jamba-SABLH for Associative Recall}.
+      % Jamba的混合循环相当于循环表~\ref{tab:Jamba_vs_Jamba-SABLH_Params} 中的混合配置三次, Jamba-SABLH 除了最后一层的 self-attention 模块外, 其余参数设置与 Jamba 相同. 除此之外, 我们还是用混合专家作为前馈网络来减少训练成本. 我们通过仔细地调整 $d_ffn$ 来使参数量保持在 1B.
+      The hybrid cycle of Jamba is equivalent to the hybrid configuration in Table~\ref{tab:Jamba_vs_Jamba-SABLH_Params} three times, and Jamba-SABLH is the same as Jamba except for the last layer of the self-attention module. In addition, we use mixture of experts as the feed-forward network to reduce training costs. We carefully adjusted $d_{ffn}$ to keep the parameter volume at 1B.
+   }
+   \label{tab:associative_recall_params}
+   \vskip 0.15in
+   \begin{tabular}{@{}llllllllllllllllll@{}}
+   \toprule
+   \sc{Model} & \sc{Params} & $n_{layers}$ & $d_{model}$ & $n_{heads}$ & $d_{state}$ & $n_{experts}$ & $top_{experts}$ \\
+   \midrule
+   Jamba & 1B & 24 & 1024 & 16 & 64 & 4 & 1 \\
+   Jamba-SABLH & 1B & 24 & 1024 & 16 & 64 & 4 & 1 \\
+   \bottomrule
+   \end{tabular}
+\end{table*}
+
+\begin{table*}[!htbp]
+   \centering
+   \caption{
+      \textbf{Results of Jamba and Jamba-SABLH for Associative Recall}.
+      % 我们对联想回忆的验证任务选取包括: 标准短上下文任务: PIQA~\cite{bisk2020piqa}, 自然长上下文任务: NarrativeQA~\cite{kovcisky2018narrativeqa}, 合成长上下文任务: HotpotQA~\cite{yang2018hotpotqa}. 我们在这三个任务上评估 Jamba 与 Jamba-SABLH 在这三个任务上的表现. Jamba-SABLH 在标准短上下文任务上提升了 $1.1\%$, 在自然长上下文任务上提升了 $20.86\%$, 在合成长上下文任务上提升了 $24.15\%$, 平均提升了 $10.24\%$.
+      We selected associative recall validation tasks including: standard short context task: PIQA~\cite{bisk2020piqa}, natural long context task: NarrativeQA~\cite{kovcisky2018narrativeqa}, synthetic long context task: HotpotQA~\cite{yang2018hotpotqa}. We evaluated the performance of Jamba and Jamba-SABLH on these three tasks. Jamba-SABLH improved by $1.1\%$ on the standard short context task, $20.86\%$ on the natural long context task, $24.15\%$ on the synthetic long context task, and an average improvement of $10.24\%$.
+   }
+   \label{tab:associative_recall_results}
+   \vskip 0.15in
+   \begin{tabular}{@{}lllllll@{}}
+   \toprule
+   \sc{Model} & \sc{PIQA} & \sc{NarrativeQA} & \sc{HotpotQA} & \sc{Average} \\
+   & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} & \sc{acc $\uparrow$} \\
+   \midrule
+   Jamba & 78.65 & 23.15 & 34.40 & 45.40 \\
+   Jamba-SABLH & 79.48 & 27.98 & 42.71 & 50.05 \\
+   \bottomrule
+   \end{tabular}
+\end{table*}
+
+\subsection{Associative Recall}
+\label{sec:Associative_Recall}
+% 我们在序列长度为 2048 的 80\% 的预训练数据集上训练了 1B 参数的 Jamba 与 Jamba-SABLH 模型, 然后将剩余的 20\% 的预训练数据集打包为 8192 上下文长度的数据集继续对模型进行预训练, 随后将微调数据集同样打包为 8192 上下文长度的数据集对模型进行微调, 将两个模型扩展到 8192 长度的上下文长度进行评估, 两个模型的参数设置如表~\ref{tab:associative_recall_params} 所示.
+We trained 1B parameter Jamba and Jamba-SABLH models on 80\% of the pre-training dataset with a sequence length of 2048, then packaged the remaining 20\% of the pre-training dataset into a dataset with a context length of 8192 to continue pre-training the model. Then the fine-tuning dataset was also packaged into a dataset with a context length of 8192 to fine-tune the model. The two models were extended to a context length of 8192 for evaluation, and the parameter settings of the two models are shown in Table~\ref{tab:associative_recall_params}.
+
+% 在表~\ref{tab:associative_recall_results} 中, 我们展示了 Jamba 与 Jamba-SABLH 在联想回忆任务上的表现, 包括标准短上下文任务, 自然长上下文任务, 合成长上下文任务. 在标准短上下文任务中, 显然不需要模型具备处理长距离依赖的能力. 我们的目标是评估在常规任务中, 当 Jamba-SABLH 模型被扩展到能够处理长上下文环境时, 其短距离联想召回的精确度是否会受到影响. 实验结果表明, 在标准短上下文任务上, Jamba-SABLH 的性能优于 Jamba. 因此 Jamba-SABLH 在适应长上下文环境的同时, 并未牺牲在常见任务上的精度. 在自然长上下文任务上, Jamba-SABLH 相较于 Jamba 实现了高达 $20.86\%$ 的性能提升. 我们分析认为, 这种提升的主要原因是 state-space 在训练阶段具有可学习的矩阵 $(A, B, C)$. 然而在推理阶段, 尽管可以根据不同的输入数据动态计算这些矩阵的值, 但用于这些计算的参数 (即决定如何计算这些矩阵和步长的函数或映射) 是固定的, 这些参数在训练阶段确定后, 在推理阶段被重新使用. 这导致 state-space 的状态在推理时可能仍然会受到与问题无关的文档的影响. 相比之下, Jamba 的最后一层由 state-space 和 MLP 组成. 在推理时, 不仅输出状态在接近输出时可能受到混淆, 输出状态还可能产生不稳定性. 这些因素共同作用, 导致 Jamba 在处理长上下文任务时的表现不如 Jamba-SABLH. 
+% 众所周知, Transformers 模型往往倾向于复制上下文示例中的答案, 而非预测实际问题的答案. 与此相反, SSMs 模型则更倾向于预测答案, 而难以直接从上文中复制答案. 在合成长上下文任务中, 模型需要从大量无关的文本中检索信息, 并展现出跨上下文的跟踪和聚合信息的能力. Jamba-SABLH 在综合长上下文任务上相比 Jamba 表现出 $24.15\%$ 的优势, 其背后的原因与之前章节~\ref{sec:Self-Attention_before_LM-Head_is_Important} 中讨论的注意力衰减和知识路由偏差问题相似. Jamba-SABLH 通过对长期依赖关系逐渐衰减的递归聚合信息进行重新全元素关注加权, 并学习 SSM 如何递归聚合信息的过程来修正知识路由偏差. 这一机制平衡了复制上下文示例中的答案与预测实际问题的答案的能力, 使得 Jamba-SABLH 能够在处理综合长上下文任务时展现出更优越的性能, 超越了 Jamba.
+As shown in Table~\ref{tab:associative_recall_results}, we show the performance of Jamba and Jamba-SABLH on associative recall tasks, including standard short context tasks, natural long context tasks, and synthetic long context tasks. In the standard short context task, it is obvious that the model does not need to have the ability to handle long-distance dependencies. Our goal is to evaluate whether the accuracy of short-distance associative recall of Jamba-SABLH will be affected when the Jamba-SABLH model is extended to handle long-context environments in common tasks. The experimental results show that Jamba-SABLH outperforms Jamba in the standard short context task. Therefore, Jamba-SABLH does not sacrifice accuracy in common tasks while adapting to long-context environments. In the natural long context task, Jamba-SABLH achieved a performance improvement of up to $20.86\%$ compared to Jamba. We believe that the main reason for this improvement is that the state-space has a learnable matrix $(A, B, C)$ in the training phase. However, in the inference phase, although the values of these matrices can be dynamically calculated according to different input data, the parameters used for these calculations (i.e., the function or mapping that determines how to calculate these matrices and the step size) are fixed, and these parameters are reused in the inference phase after being determined in the training phase. This means that the state of the state-space may still be influenced by irrelevant documents during inference. In contrast, the last layer of Jamba consists of state-space and MLP. In inference, not only the output state may be confused when approaching the output, but the output state may also be unstable. These factors together result in Jamba's performance in handling long-context tasks being inferior to Jamba-SABLH. It is well known that Transformers models tend to copy the answers in the context examples rather than predict the actual answers to the questions. In contrast, SSMs models tend to predict answers and are difficult to copy answers directly from the context. In the synthetic long context task, the model needs to retrieve information from a large amount of irrelevant text and demonstrate the ability to track and aggregate information across contexts. Jamba-SABLH outperforms Jamba by $24.15\%$ in the synthetic long context task, and the reasons behind it are similar to the attention decay and knowledge routing bias discussed in the previous section~\ref{sec:Self-Attention_before_LM-Head_is_Important}. Jamba-SABLH corrects the knowledge routing bias by re-attending to the recursively aggregated information that gradually decays the long-term dependency relationship and learns how SSMs recursively aggregate information. This mechanism balances the ability to copy answers from context examples and predict actual answers to questions, enabling Jamba-SABLH to demonstrate superior performance in handling synthetic long context tasks, surpassing Jamba.
+
+
+\begin{figure*}[ht]
+   \centering
+   \includegraphics[width=\linewidth]{fig/needle-in-a-haystack.pdf}
+   \caption{
+     \textbf{Needle in a Haystack}.
+      % 不同架构的模型在 Needle in a Haystack 任务上的表现. 我们在不同上下文长度对单独使用state-space的Mamba2~\cite{mamba2}, 单独使用self-attention的Llama3~\cite{grattafiori2024llama3herdmodels}, 使用state-space和self-attention混合算法的Jamba, 以及我们的方法Jamba-SABLH进行了评估. 我们的方法表现出最佳性能.
+      Performance of models with different architectures on the Needle in a Haystack task. We evaluated Mamba2~\cite{mamba2} using state-space alone, Llama3~\cite{grattafiori2024llama3herdmodels} using self-attention alone, Jamba using a hybrid algorithm of state-space and self-attention, and our method Jamba-SABLH on different context lengths. Our method shows the best performance.
+      }
+   \label{fig:niah}
+\end{figure*}
+
+\subsection{Needle in a Haystack}
+
+% 我们进一步在合成检索任务的大海捞针中比较 Jamba-SABLH, Jamba, Llama3, Mamba2 的性能. 一个随机且有信息的句子 (即针) 被插入到长文档 (即大海) 中, 并要求模型从大海中检索出针以回答问题. 所有模型的大小都是 1B, 并且使用相同的设置进行训练: 预训练数据集的 80\% 使用 2048 序列长度, 剩余 20\% 的数据集使用 8192 序列长度进行预训练, 微调数据集同样使用 8192 序列长度进行微调. 如图~\ref{fig:niah} 所示, Jamba-SABLH 模型显著优于Mamba2, Llama3 和 Jamba.
+We further compare the performance of Jamba-SABLH, Jamba, Llama3, and Mamba2 in the synthetic retrieval task Needle in a Haystack. A random and informative sentence (i.e., needle) is inserted into a long document (i.e., haystack), and the model is required to retrieve the needle from the haystack to answer the question. All models are of size 1B and trained with the same settings: 80\% of the pre-training dataset uses a sequence length of 2048, the remaining 20\% of the dataset uses a sequence length of 8192 for pre-training, and the fine-tuning dataset also uses a sequence length of 8192 for fine-tuning. As shown in Figure~\ref{fig:niah}, the Jamba-SABLH model significantly outperforms Mamba2, Llama3, and Jamba.
 
 \bibliography{paper}
 \bibliographystyle{icml2025}
