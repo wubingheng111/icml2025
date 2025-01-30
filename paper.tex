@@ -351,11 +351,24 @@ As shown in Table~\ref{tab:associative_recall_results}, we show the performance 
 % 我们进一步在合成检索任务的大海捞针中比较 Jamba-SABLH, Jamba, Llama3, Mamba2 的性能. 一个随机且有信息的句子 (即针) 被插入到长文档 (即大海) 中, 并要求模型从大海中检索出针以回答问题. 所有模型的大小都是 1B, 并且使用相同的设置进行训练: 预训练数据集的 80\% 使用 2048 序列长度, 剩余 20\% 的数据集使用 8192 序列长度进行预训练, 微调数据集同样使用 8192 序列长度进行微调. 如图~\ref{fig:niah} 所示, Jamba-SABLH 模型显著优于Mamba2, Llama3 和 Jamba.
 We further compare the performance of Jamba-SABLH, Jamba, Llama3, and Mamba2 in the synthetic retrieval task Needle in a Haystack. A random and informative sentence (i.e., needle) is inserted into a long document (i.e., haystack), and the model is required to retrieve the needle from the haystack to answer the question. All models are of size 1B and trained with the same settings: 80\% of the pre-training dataset uses a sequence length of 2048, the remaining 20\% of the dataset uses a sequence length of 8192 for pre-training, and the fine-tuning dataset also uses a sequence length of 8192 for fine-tuning. As shown in Figure~\ref{fig:niah}, the Jamba-SABLH model significantly outperforms Mamba2, Llama3, and Jamba.
 
+<<<<<<< HEAD
 \section*{Impact Statement}
 
 This paper presents work whose goal is to advance the field of 
 Machine Learning. There are many potential societal consequences 
 of our work, none which we feel must be specifically highlighted here.
+=======
+\subsection{conclusion}
+
+%本文重新审视了结合状态空间算法和自注意力算法的混合建模架构在上下文学习任务中的表现。通过详细的分析和广泛的实验，我们揭示了现有混合模型在上下文学习任务中的局限性，尽管它们在大多数语言建模任务中相比单独使用状态空间或自注意力算法表现更好。
+%我们提出的“Self-Attention before LM-Head”方法在解决这些局限性方面取得了显著进展。通过修改混合架构，使状态空间和自注意力使用相同的编码，并在语言模型头部（LM-Head）之前加入由自注意力和前馈网络组成的Transformer模块，我们有效缓解了知识路由中的偏差，并增强了模型利用状态空间和自注意力机制优势的能力。这一改进在多种任务中都取得了显著的性能提升，包括标准短文本任务、自然长文本任务和合成长文本任务，并在某些任务上达到了最先进的性能水平。
+%实验结果表明，正确整合这两种算法对于充分发挥其互补优势至关重要。重新设计的Jamba-SABLH不仅提高了模型在常见任务中短距离关联回忆的准确性，还显著增强了模型处理长文本任务的能力，显示出其强大的鲁棒性和适应性。此外，在“大海捞针”任务中，我们的方法表现出色，表明其在平衡从上下文中复制答案和预测问题实际答案的能力方面具有明显优势。
+%我们的工作为混合建模架构的改进提供了新的思路，为进一步提高模型在上下文学习任务中的性能提供了有益的启示。 
+This paper re-examines the performance of the hybrid modeling architecture combining state-space algorithms and self-attention algorithms in context learning tasks. Through detailed analysis and extensive experiments, we reveal the limitations of existing hybrid models in context learning tasks, although they perform better than using state-space or self-attention algorithms alone in most language modeling tasks.
+Our proposed "Self-Attention before LM-Head" method has made significant progress in addressing these limitations. By modifying the hybrid architecture to make the state-space and self-attention use the same encoding and adding a Transformer module composed of self-attention and feed-forward networks before the language model head (LM-Head), we effectively alleviate the bias in knowledge routing and enhance the model's ability to leverage the advantages of state-space and self-attention mechanisms. This improvement has achieved significant performance improvements in various tasks, including standard short text tasks, natural long text tasks, and synthetic long text tasks, and has reached the state-of-the-art performance level in some tasks.
+The experimental results show that it is crucial to correctly integrate these two algorithms to fully exploit their complementary advantages. The redesigned Jamba-SABLH not only improves the accuracy of the model in common tasks of short-distance associative recall but also significantly enhances the model's ability to handle long text tasks, demonstrating its robustness and adaptability. In addition, our method performs well in the "Needle in a Haystack" task, demonstrating its significant advantage in balancing the ability to copy answers from context and predict actual answers to questions.
+Our work provides new ideas for improving the hybrid modeling architecture and provides valuable insights for further improving the performance of the model in context learning tasks.
+>>>>>>> 0a052f7c11e1a4ffcff0daf5c20f542271c363bc
 
 \bibliography{paper}
 \bibliographystyle{icml2025}
