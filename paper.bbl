@@ -1,29 +1,126 @@
-\begin{thebibliography}{4}
+\begin{thebibliography}{23}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
+\bibitem[Bisk et~al.(2020)Bisk, Zellers, Gao, Choi, et~al.]{bisk2020piqa}
+Bisk, Y., Zellers, R., Gao, J., Choi, Y., et~al.
+\newblock P{I}{Q}{A}: Reasoning about physical commonsense in natural language.
+\newblock In \emph{Proceedings of the AAAI conference on Artificial Intelligence}, volume~34, 2020.
+
+\bibitem[Brightmart(2019)]{translation2019zh_dataset}
+Brightmart.
+\newblock translation2019zh dataset, 2019.
+\newblock A large-scale Chinese-English parallel corpus with 5.2 million sentence pairs.
+
+\bibitem[Coordination(2024)]{paracrawl_dataset}
+Coordination, E. L.~R.
+\newblock Paracrawl dataset, 2024.
+\newblock Accessed: 2025-01-28.
+
+\bibitem[Dao \& Gu(2024)Dao and Gu]{mamba2}
+Dao, T. and Gu, A.
+\newblock Transformers are {SSM}s: Generalized models and efficient algorithms through structured state space duality.
+\newblock In \emph{International Conference on Machine Learning (ICML)}, 2024.
+
+\bibitem[Du et~al.(2022)Du, Qian, Liu, Ding, Qiu, Yang, and Tang]{du2022glm}
+Du, Z., Qian, Y., Liu, X., Ding, M., Qiu, J., Yang, Z., and Tang, J.
+\newblock Glm: General language model pretraining with autoregressive blank infilling.
+\newblock In \emph{Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)}, pp.\  320--335, 2022.
+
+\bibitem[for Machine~Translation(2024{\natexlab{a}})]{newscommentary_dataset}
+for Machine~Translation, E.~A.
+\newblock News commentary dataset, 2024{\natexlab{a}}.
+\newblock Accessed: 2025-01-28.
+
+\bibitem[for Machine~Translation(2024{\natexlab{b}})]{newscrawl_dataset}
+for Machine~Translation, E.~A.
+\newblock News crawl dataset, 2024{\natexlab{b}}.
+\newblock Accessed: 2025-01-28.
+
+\bibitem[Foundation(2024)]{wikipedia_dataset}
+Foundation, W.
+\newblock Wikipedia corpus, 2024.
+\newblock Accessed: 2025-01-28.
+
+\bibitem[Grattafiori et~al.(2024)Grattafiori, Dubey, Jauhri, Pandey, Kadian, Al-Dahle, Letman, Mathur, Schelten, Vaughan, Yang, Fan, Goyal, Hartshorn, Yang, Mitra, Sravankumar, Korenev, Hinsvark, Rao, Zhang, Rodriguez, Gregerson, Spataru, Roziere, Biron, Tang, Chern, Caucheteux, Nayak, Bi, Marra, McConnell, Keller, Touret, Wu, Wong, Ferrer, Nikolaidis, Allonsius, Song, Pintz, Livshits, Wyatt, Esiobu, Choudhary, Mahajan, Garcia-Olano, Perino, Hupkes, Lakomkin, AlBadawy, Lobanova, Dinan, Smith, Radenovic, Guzmán, Zhang, Synnaeve, Lee, Anderson, Thattai, Nail, Mialon, Pang, Cucurell, Nguyen, Korevaar, Xu, Touvron, Zarov, Ibarra, Kloumann, Misra, Evtimov, Zhang, Copet, Lee, Geffert, Vranes, Park, Mahadeokar, Shah, van~der Linde, Billock, Hong, Lee, Fu, Chi, Huang, Liu, Wang, Yu, Bitton, Spisak, Park, Rocca, Johnstun, Saxe, Jia, Alwala, Prasad, Upasani, Plawiak, Li, Heafield, Stone, El-Arini, Iyer, Malik, Chiu, Bhalla, Lakhotia, Rantala-Yeary, van~der Maaten, Chen, Tan, Jenkins, Martin, Madaan, Malo, Blecher, Landzaat, de~Oliveira, Muzzi, Pasupuleti, Singh, Paluri, Kardas, Tsimpoukelli, Oldham, Rita, Pavlova, Kambadur, Lewis, Si, Singh, Hassan, Goyal, Torabi, Bashlykov, Bogoychev, Chatterji, Zhang, Duchenne, Çelebi, Alrassy, Zhang, Li, Vasic, Weng, Bhargava, Dubal, Krishnan, Koura, Xu, He, Dong, Srinivasan, Ganapathy, Calderer, Cabral, Stojnic, Raileanu, Maheswari, Girdhar, Patel, Sauvestre, Polidoro, Sumbaly, Taylor, Silva, Hou, Wang, Hosseini, Chennabasappa, Singh, Bell, Kim, Edunov, Nie, Narang, Raparthy, Shen, Wan, Bhosale, Zhang, Vandenhende, Batra, Whitman, Sootla, Collot, Gururangan, Borodinsky, Herman, Fowler, Sheasha, Georgiou, Scialom, Speckbacher, Mihaylov, Xiao, Karn, Goswami, Gupta, Ramanathan, Kerkez, Gonguet, Do, Vogeti, Albiero, Petrovic, Chu, Xiong, Fu, Meers, Martinet, Wang, Wang, Tan, Xia, Xie, Jia, Wang, Goldschlag, Gaur, Babaei, Wen, Song, Zhang, Li, Mao, Coudert, Yan, Chen, Papakipos, Singh, Srivastava, Jain, Kelsey, Shajnfeld, Gangidi, Victoria, Goldstand, Menon, Sharma, Boesenberg, Baevski, Feinstein, Kallet, Sangani, Teo, Yunus, Lupu, Alvarado, Caples, Gu, Ho, Poulton, Ryan, Ramchandani, Dong, Franco, Goyal, Saraf, Chowdhury, Gabriel, Bharambe, Eisenman, Yazdan, James, Maurer, Leonhardi, Huang, Loyd, Paola, Paranjape, Liu, Wu, Ni, Hancock, Wasti, Spence, Stojkovic, Gamido, Montalvo, Parker, Burton, Mejia, Liu, Wang, Kim, Zhou, Hu, Chu, Cai, Tindal, Feichtenhofer, Gao, Civin, Beaty, Kreymer, Li, Adkins, Xu, Testuggine, David, Parikh, Liskovich, Foss, Wang, Le, Holland, Dowling, Jamil, Montgomery, Presani, Hahn, Wood, Le, Brinkman, Arcaute, Dunbar, Smothers, Sun, Kreuk, Tian, Kokkinos, Ozgenel, Caggioni, Kanayet, Seide, Florez, Schwarz, Badeer, Swee, Halpern, Herman, Sizov, Guangyi, Zhang, Lakshminarayanan, Inan, Shojanazeri, Zou, Wang, Zha, Habeeb, Rudolph, Suk, Aspegren, Goldman, Zhan, Damlaj, Molybog, Tufanov, Leontiadis, Veliche, Gat, Weissman, Geboski, Kohli, Lam, Asher, Gaya, Marcus, Tang, Chan, Zhen, Reizenstein, Teboul, Zhong, Jin, Yang, Cummings, Carvill, Shepard, McPhie, Torres, Ginsburg, Wang, Wu, U, Saxena, Khandelwal, Zand, Matosich, Veeraraghavan, Michelena, Li, Jagadeesh, Huang, Chawla, Huang, Chen, Garg, A, Silva, Bell, Zhang, Guo, Yu, Moshkovich, Wehrstedt, Khabsa, and et~al.]{grattafiori2024llama3herdmodels}
+Grattafiori, A., Dubey, A., Jauhri, A., Pandey, A., Kadian, A., Al-Dahle, A., Letman, A., Mathur, A., Schelten, A., Vaughan, A., Yang, A., Fan, A., Goyal, A., Hartshorn, A., Yang, A., Mitra, A., Sravankumar, A., Korenev, A., Hinsvark, A., Rao, A., Zhang, A., Rodriguez, A., Gregerson, A., Spataru, A., Roziere, B., Biron, B., Tang, B., Chern, B., Caucheteux, C., Nayak, C., Bi, C., Marra, C., McConnell, C., Keller, C., Touret, C., Wu, C., Wong, C., Ferrer, C.~C., Nikolaidis, C., Allonsius, D., Song, D., Pintz, D., Livshits, D., Wyatt, D., Esiobu, D., Choudhary, D., Mahajan, D., Garcia-Olano, D., Perino, D., Hupkes, D., Lakomkin, E., AlBadawy, E., Lobanova, E., Dinan, E., Smith, E.~M., Radenovic, F., Guzmán, F., Zhang, F., Synnaeve, G., Lee, G., Anderson, G.~L., Thattai, G., Nail, G., Mialon, G., Pang, G., Cucurell, G., Nguyen, H., Korevaar, H., Xu, H., Touvron, H., Zarov, I., Ibarra, I.~A., Kloumann, I., Misra, I., Evtimov, I., Zhang, J., Copet, J., Lee, J., Geffert, J., Vranes, J., Park, J., Mahadeokar, J., Shah, J., van~der Linde, J., Billock, J., Hong, J., Lee, J., Fu, J., Chi, J., Huang, J., Liu, J., Wang, J., Yu, J., Bitton, J., Spisak, J., Park, J., Rocca, J., Johnstun, J., Saxe, J., Jia, J., Alwala, K.~V., Prasad, K., Upasani, K., Plawiak, K., Li, K., Heafield, K., Stone, K., El-Arini, K., Iyer, K., Malik, K., Chiu, K., Bhalla, K., Lakhotia, K., Rantala-Yeary, L., van~der Maaten, L., Chen, L., Tan, L., Jenkins, L., Martin, L., Madaan, L., Malo, L., Blecher, L., Landzaat, L., de~Oliveira, L., Muzzi, M., Pasupuleti, M., Singh, M., Paluri, M., Kardas, M., Tsimpoukelli, M., Oldham, M., Rita, M., Pavlova, M., Kambadur, M., Lewis, M., Si, M., Singh, M.~K., Hassan, M., Goyal, N., Torabi, N., Bashlykov, N., Bogoychev, N., Chatterji, N., Zhang, N., Duchenne, O., Çelebi, O., Alrassy, P., Zhang, P., Li, P., Vasic, P., Weng, P., Bhargava, P., Dubal, P., Krishnan, P., Koura, P.~S., Xu, P., He, Q., Dong, Q., Srinivasan, R., Ganapathy, R., Calderer, R., Cabral, R.~S., Stojnic, R., Raileanu, R., Maheswari, R., Girdhar, R., Patel, R., Sauvestre, R., Polidoro, R., Sumbaly, R., Taylor, R., Silva, R., Hou, R., Wang, R., Hosseini, S., Chennabasappa, S., Singh, S., Bell, S., Kim, S.~S., Edunov, S., Nie, S., Narang, S., Raparthy, S., Shen, S., Wan, S., Bhosale, S., Zhang, S., Vandenhende, S., Batra, S., Whitman, S., Sootla, S., Collot, S., Gururangan, S., Borodinsky, S., Herman, T., Fowler, T., Sheasha, T., Georgiou, T., Scialom, T., Speckbacher, T., Mihaylov, T., Xiao, T., Karn, U., Goswami, V., Gupta, V., Ramanathan, V., Kerkez, V., Gonguet, V., Do, V., Vogeti, V., Albiero, V., Petrovic, V., Chu, W., Xiong, W., Fu, W., Meers, W., Martinet, X., Wang, X., Wang, X., Tan, X.~E., Xia, X., Xie, X., Jia, X., Wang, X., Goldschlag, Y., Gaur, Y., Babaei, Y., Wen, Y., Song, Y., Zhang, Y., Li, Y., Mao, Y., Coudert, Z.~D., Yan, Z., Chen, Z., Papakipos, Z., Singh, A., Srivastava, A., Jain, A., Kelsey, A., Shajnfeld, A., Gangidi, A., Victoria, A., Goldstand, A., Menon, A., Sharma, A., Boesenberg, A., Baevski, A., Feinstein, A., Kallet, A., Sangani, A., Teo, A., Yunus, A., Lupu, A., Alvarado, A., Caples, A., Gu, A., Ho, A., Poulton, A., Ryan, A., Ramchandani, A., Dong, A., Franco, A., Goyal, A., Saraf, A., Chowdhury, A., Gabriel, A., Bharambe, A., Eisenman, A., Yazdan, A., James, B., Maurer, B., Leonhardi, B., Huang, B., Loyd, B., Paola, B.~D., Paranjape, B., Liu, B., Wu, B., Ni, B., Hancock, B., Wasti, B., Spence, B., Stojkovic, B., Gamido, B., Montalvo, B., Parker, C., Burton, C., Mejia, C., Liu, C., Wang, C., Kim, C., Zhou, C., Hu, C., Chu, C.-H., Cai, C., Tindal, C., Feichtenhofer, C., Gao, C., Civin, D., Beaty, D., Kreymer, D., Li, D., Adkins, D., Xu, D., Testuggine, D., David, D., Parikh, D., Liskovich, D., Foss, D., Wang, D., Le, D., Holland, D., Dowling, E., Jamil, E., Montgomery, E., Presani, E., Hahn, E., Wood, E., Le, E.-T., Brinkman, E., Arcaute, E., Dunbar, E., Smothers, E., Sun, F., Kreuk, F., Tian, F., Kokkinos, F., Ozgenel, F., Caggioni, F., Kanayet, F., Seide, F., Florez, G.~M., Schwarz, G., Badeer, G., Swee, G., Halpern, G., Herman, G., Sizov, G., Guangyi, Zhang, Lakshminarayanan, G., Inan, H., Shojanazeri, H., Zou, H., Wang, H., Zha, H., Habeeb, H., Rudolph, H., Suk, H., Aspegren, H., Goldman, H., Zhan, H., Damlaj, I., Molybog, I., Tufanov, I., Leontiadis, I., Veliche, I.-E., Gat, I., Weissman, J., Geboski, J., Kohli, J., Lam, J., Asher, J., Gaya, J.-B., Marcus, J., Tang, J., Chan, J., Zhen, J., Reizenstein, J., Teboul, J., Zhong, J., Jin, J., Yang, J., Cummings, J., Carvill, J., Shepard, J., McPhie, J., Torres, J., Ginsburg, J., Wang, J., Wu, K., U, K.~H., Saxena, K., Khandelwal, K., Zand, K., Matosich, K., Veeraraghavan, K., Michelena, K., Li, K., Jagadeesh, K., Huang, K., Chawla, K., Huang, K., Chen, L., Garg, L., A, L., Silva, L., Bell, L., Zhang, L., Guo, L., Yu, L., Moshkovich, L., Wehrstedt, L., Khabsa, M., and et~al.
+\newblock The llama 3 herd of models, 2024.
+\newblock URL \url{https://arxiv.org/abs/2407.21783}.
+
 \bibitem[Gu \& Dao(2023)Gu and Dao]{gu2023mamba}
 Gu, A. and Dao, T.
 \newblock Mamba: Linear-time sequence modeling with selective state spaces.
 \newblock \emph{arXiv preprint arXiv:2312.00752}, 2023.
+
+\bibitem[Kitaev et~al.(2020)Kitaev, Kaiser, and Levskaya]{kitaev2020reformer}
+Kitaev, N., Kaiser, {\L}., and Levskaya, A.
+\newblock Reformer: The efficient transformer.
+\newblock \emph{arXiv preprint arXiv:2001.04451}, 2020.
+
+\bibitem[Kovcisky et~al.(2018)Kovcisky, McCann, Bradbury, Xiong, and Socher]{kovcisky2018narrativeqa}
+Kovcisky, T., McCann, B., Bradbury, J., Xiong, C., and Socher, R.
+\newblock The narrativeqa reading comprehension challenge.
+\newblock \emph{Transactions of the Association for Computational Linguistics}, 6:\penalty0 317--328, 2018.
+
+\bibitem[Li et~al.(2022)Li, Zhang, Zhao, Shen, Liu, Mao, and Zhang]{li-etal-2022-csl}
+Li, Y., Zhang, Y., Zhao, Z., Shen, L., Liu, W., Mao, W., and Zhang, H.
+\newblock {CSL}: A large-scale {C}hinese scientific literature dataset.
+\newblock In \emph{Proceedings of the 29th International Conference on Computational Linguistics}, pp.\  3917--3923, Gyeongju, Republic of Korea, 2022. International Committee on Computational Linguistics.
 
 \bibitem[Lieber et~al.(2024)Lieber, Lenz, Bata, Cohen, Osin, Dalmedigos, Safahi, Meirom, Belinkov, Shalev-Shwartz, et~al.]{lieber2024jamba}
 Lieber, O., Lenz, B., Bata, H., Cohen, G., Osin, J., Dalmedigos, I., Safahi, E., Meirom, S., Belinkov, Y., Shalev-Shwartz, S., et~al.
 \newblock Jamba: A hybrid transformer-mamba language model.
 \newblock \emph{arXiv preprint arXiv:2403.19887}, 2024.
 
+\bibitem[Nations(2024)]{uncorpus_dataset}
+Nations, U.
+\newblock Uncorpus dataset, 2024.
+\newblock Accessed: 2025-01-28.
+
+\bibitem[NVIDIA(2022)]{pytorch}
+NVIDIA, M.
+\newblock Pytorch container image.
+\newblock \url{https://catalog.ngc.nvidia.com/orgs/nvidia/containers/pytorch}, 2022.
+
 \bibitem[Shi \& Wu(2024)Shi and Wu]{shi2024wonderfulmatrices}
 Shi, J. and Wu, B.
 \newblock Wonderful matrices: Combining for a more efficient and effective foundation model architecture, 2024.
 \newblock URL \url{https://arxiv.org/abs/2412.11834}.
+
+\bibitem[Team(2020)]{cluecorpusSmall_dataset}
+Team, C.
+\newblock Cluecorpussmall dataset, 2020.
+\newblock Accessed: 2025-01-28.
+
+\bibitem[Unknown(2024)]{wikimatri_dataset}
+Unknown.
+\newblock Wikimatri dataset, 2024.
+\newblock Accessed: 2025-01-28.
 
 \bibitem[Wolf et~al.(2020)Wolf, Debut, Sanh, Chaumond, Delangue, Moi, Cistac, Rault, Louf, Funtowicz, Davison, Shleifer, von Platen, Ma, Jernite, Plu, Xu, Scao, Gugger, Drame, Lhoest, and Rush]{wolf-etal-2020-transformers}
 Wolf, T., Debut, L., Sanh, V., Chaumond, J., Delangue, C., Moi, A., Cistac, P., Rault, T., Louf, R., Funtowicz, M., Davison, J., Shleifer, S., von Platen, P., Ma, C., Jernite, Y., Plu, J., Xu, C., Scao, T.~L., Gugger, S., Drame, M., Lhoest, Q., and Rush, A.~M.
 \newblock Transformers: State-of-the-art natural language processing.
 \newblock In \emph{Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations}, pp.\  38--45, Online, October 2020. Association for Computational Linguistics.
 \newblock URL \url{https://www.aclweb.org/anthology/2020.emnlp-demos.6}.
+
+\bibitem[Xu et~al.(2020)Xu, Hu, Zhang, Li, Cao, Li, Xu, Sun, Yu, Yu, Tian, Dong, Liu, Shi, Cui, Li, Zeng, Wang, Xie, Li, Patterson, Tian, Zhang, Zhou, Liu, Zhao, Zhao, Yue, Zhang, Yang, Richardson, and Lan]{xu-etal-2020-clue}
+Xu, L., Hu, H., Zhang, X., Li, L., Cao, C., Li, Y., Xu, Y., Sun, K., Yu, D., Yu, C., Tian, Y., Dong, Q., Liu, W., Shi, B., Cui, Y., Li, J., Zeng, J., Wang, R., Xie, W., Li, Y., Patterson, Y., Tian, Z., Zhang, Y., Zhou, H., Liu, S., Zhao, Z., Zhao, Q., Yue, C., Zhang, X., Yang, Z., Richardson, K., and Lan, Z.
+\newblock {CLUE}: A {C}hinese language understanding evaluation benchmark.
+\newblock In \emph{Proceedings of the 28th International Conference on Computational Linguistics}, pp.\  4762--4772, Barcelona, Spain (Online), December 2020. International Committee on Computational Linguistics.
+\newblock \doi{10.18653/v1/2020.coling-main.419}.
+\newblock URL \url{https://aclanthology.org/2020.coling-main.419}.
+
+\bibitem[Yang et~al.(2018)Yang, Qi, Zhang, Bengio, Cohen, Salakhutdinov, and Manning]{yang2018hotpotqa}
+Yang, Z., Qi, P., Zhang, S., Bengio, Y., Cohen, W.~W., Salakhutdinov, R., and Manning, C.~D.
+\newblock Hotpotqa: A dataset for diverse, explainable multi-hop question answering.
+\newblock \emph{arXiv preprint arXiv:1809.09600}, 2018.
+
+\bibitem[Ziegler(2004)]{bookcrossing_dataset}
+Ziegler, C.-N.
+\newblock Book-crossing dataset, 2004.
+\newblock Accessed: 2025-01-28.
 
 \end{thebibliography}
