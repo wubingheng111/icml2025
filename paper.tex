@@ -183,9 +183,10 @@ Through the self-attention mechanism, the Transformer model can directly capture
 
 
 \subsection{Hybrid Modeling}
-% 混合建模架构模型是一种将状态空间和自注意力进行混合建模的模型，其目的是使模型具备与Mamba类似的效率和与Transformer类似的效果。例如，Wonderful Matrices~\cite{shi2024wonderfulmatrices}模型通过将状态空间和自注意力进行混合建模，使得模型能够同时利用状态空间的高效上下文摘要和自注意力有效联想召回的优势。然而，这些模型在情景学习任务上的表现仍然不如原始的Transformer模型，这表明了混合建模架构模型在情景学习任务上的局限性。
+% 混合建模架构模型是一种将状态空间和自注意力进行混合建模的模型，其目的是使模型具备与Mamba类似的效率和与Transformer类似的效果。例如，jamba~\cite{lieber2024jamba}模型是一种基于混合建模架构的通用语言模型，其基本结构为8层混合循环，每个混合循环包括7个state-space模块、1个self-attention模块和8个MLP模块。通过将状态空间和自注意力进行混合建模，jamba模型能够在大多数语言建模任务上取得更好的性能。基于混合建模架构的模型在大多数语言建模任务上的表现超越了单独使用Mamba或Transformer，但是在情景学习任务上的表现并不理想。
 
-Hybrid modeling architecture models are models that combine state-space and self-attention for hybrid modeling, with the goal of making the model have efficiency similar to Mamba and effect similar to Transformer. For example, the Wonderful Matrices~\cite{shi2024wonderfulmatrices} model combines state-space and self-attention for hybrid modeling, allowing the model to leverage the advantages of the efficient context summary of the state-space and the effective associative recall of self-attention. However, these models still do not perform as well as the original Transformer model in in-context learning tasks, which indicates the limitations of hybrid modeling architecture models in in-context learning tasks.
+Hybrid modeling architecture models are models that combine state-space and self-attention for hybrid modeling, with the goal of making the model have efficiency similar to Mamba and effect similar to Transformer. For example, the Jamba~\cite{lieber2024jamba} model is a universal language model based on a hybrid modeling architecture, with a basic structure of 8 layers of hybrid cycles, each hybrid cycle consisting of 7 state-space modules, 1 self-attention module, and 8 MLP modules. By combining state-space and self-attention for hybrid modeling, the Jamba model can achieve better performance on most language modeling tasks. Models based on hybrid modeling architecture outperform using Mamba or Transformer alone in most language modeling tasks, but their performance in in-context learning tasks is not ideal.
+
 
 
 
